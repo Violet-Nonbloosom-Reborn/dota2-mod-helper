@@ -1,0 +1,140 @@
+---
+name: dota2mod-helper
+description: Dota 2 自定义游戏开发辅助。适用于使用 Dota 2 Workshop Tools 开发自定义技能（DataDriven KV）、Lua 脚本（vscripts）、Panorama UI（XML、JavaScript、CSS），以及单位、物品、修饰符的 KeyValue 文件。包含代码模式、约定和自定义游戏开发工作流指引。
+---
+
+# Dota 2 Modding Helper
+
+## 概述
+
+覆盖 Dota 2 自定义游戏开发的三个领域：
+
+- **KeyValue (KV)** — 技能、单位、物品、修饰符的数据定义
+- **Lua (VScript)** — 服务端游戏逻辑
+- **Panorama** — 客户端 UI（XML 布局、JavaScript、CSS）
+
+## 架构
+
+Dota 2 自定义游戏采用前后端分离架构：
+
+```
+后端 (Server)              前端 (Client)
+├── KV 文件                ├── XML 布局
+│   ├── 技能 (abilities)   ├── JavaScript 面板
+│   ├── 单位 (units)       └── CSS 样式
+│   ├── 物品 (items)       └── (Panorama)
+│   └── 修饰符 (modifiers)
+└── Lua 脚本 (vscripts)
+```
+
+## 领域参考文档
+
+根据任务加载对应的参考文档：
+
+### KV（KeyValue 数据定义）
+**何时阅读**：创建或编辑 `.txt` KV 格式的技能、单位、物品、修饰符定义时。
+
+参阅 `references/kv/`：
+- DataDriven 技能模式
+- 单位与英雄定义
+- 自定义物品定义
+- 修饰符属性与状态
+- 常用 KV 结构与约定
+
+### Lua (VScript)
+**何时阅读**：编写服务端游戏逻辑、技能处理器、游戏模式规则时。
+
+参阅 `references/lua/`：
+- Dota 2 Lua 脚本约定
+- 常用模式（创建单位、伤害、修饰符）
+- 游戏模式与技能 Lua 模式
+- 服务端-客户端通信
+
+### Panorama（UI）
+**何时阅读**：构建自定义 HUD、仪表盘、技能提示框、自定义 UI 面板时。
+
+参阅 `references/panorama/`：
+- XML 布局结构
+- JavaScript API 与事件处理
+- Panorama CSS 特性（与 Web CSS 有差异）
+- 面板通信模式
+
+## API 参考
+
+Dota 2 API（函数、常量、枚举）维护在独立的 Skill 中：`dota2-script-ref`
+
+以下查询请使用上述 Skill：
+- API 函数签名
+- 常量与枚举
+- 类方法
+
+## 快速参考
+
+### KV 技能骨架
+
+```kv
+"ability_example"
+{
+    "BaseClass"             "ability_datadriven"
+    "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+    "AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_TEAM_ENEMY"
+    "AbilityUnitTargetType" "DOTA_UNIT_TARGET_HERO"
+    "AbilityTextureName"    "example_texture"
+    "MaxLevel"              "3"
+    
+    "AbilityValues"
+    {
+        "damage"        "100 150 200"
+    }
+    
+    "OnSpellStart"
+    {
+        "Damage"
+        {
+            "Target"    "TARGET"
+            "Type"      "DAMAGE_TYPE_MAGICAL"
+            "Damage"    "%damage"
+        }
+    }
+}
+```
+
+### Lua 常用模式
+
+```lua
+-- 查找范围内的单位
+local units = FindUnitsInRadius(
+    caster:GetTeamNumber(),
+    caster:GetAbsOrigin(),
+    nil,
+    radius,
+    DOTA_UNIT_TARGET_TEAM_ENEMY,
+    DOTA_UNIT_TARGET_HERO,
+    DOTA_UNIT_TARGET_FLAG_NONE,
+    FIND_ANY_ORDER,
+    false
+)
+
+-- 施加伤害
+ApplyDamage({
+    victim = target,
+    attacker = caster,
+    damage = damage_amount,
+    damage_type = DAMAGE_TYPE_MAGICAL,
+    ability = ability
+})
+
+-- 施加修饰符
+ApplyModifier({
+    caster = caster,
+    target = target,
+    modifier_name = "modifier_example"
+})
+```
+
+## 工作流
+
+1. 确定领域：KV 数据定义、Lua 逻辑或 Panorama UI
+2. 从 `references/` 加载对应的参考文档
+3. 查询 API 时使用 Skill `dota2-script-ref`
+4. 遵循领域特定约定（参见参考文档）
