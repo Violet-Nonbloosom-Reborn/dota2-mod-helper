@@ -36,6 +36,7 @@ Dota 2 自定义游戏采用前后端分离架构：
 
 参阅 `references/kv/`：
 - `kv-format.md` — KV 文件格式规范（语法、注释、文件包含）
+- `localization.md` — 本地化文本文件（addon_*.txt 结构与键名约定）
 - DataDriven 技能模式（待补充）
 - 单位与英雄定义（待补充）
 - 自定义物品定义（待补充）
@@ -54,10 +55,11 @@ Dota 2 自定义游戏采用前后端分离架构：
 **何时阅读**：构建自定义 HUD、仪表盘、技能提示框、自定义 UI 面板时。
 
 参阅 `references/panorama/`：
-- XML 布局结构
-- JavaScript API 与事件处理
-- Panorama CSS 特性（与 Web CSS 有差异）
-- 面板通信模式
+- `localization.md` — Panorama JS 中使用本地化文本
+- XML 布局结构（待补充）
+- JavaScript API 与事件处理（待补充）
+- Panorama CSS 特性（与 Web CSS 有差异）（待补充）
+- 面板通信模式（待补充）
 
 ## API 参考
 
