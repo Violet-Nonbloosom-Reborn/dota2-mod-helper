@@ -27,6 +27,15 @@ Dota 2 自定义游戏采用前后端分离架构：
 └── Lua 脚本 (vscripts)
 ```
 
+## 入门
+
+**何时阅读**：初次接触 Dota 2 自定义游戏开发，或需要了解项目整体结构时。
+
+参阅 `references/get-started.md`：
+- addon 目录结构总览
+- 核心文件说明（addoninfo.txt、addon_game_mode.lua）
+- KV 数据定义与 Lua 脚本的关系
+
 ## 领域参考文档
 
 根据任务加载对应的参考文档：
