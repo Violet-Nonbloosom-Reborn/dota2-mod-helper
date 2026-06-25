@@ -4,23 +4,33 @@ Dota 2 自定义游戏使用 KV 格式的本地化文件来定义游戏名称、
 
 ## 文件位置与命名
 
-本地化文件位于 `resource/` 目录下，命名规则为 `addon_<language>.txt`。
+本地化文件位于两个位置：
+
+- `resource/addon_<language>.txt` — 服务端通用本地化
+- `panorama/localization/addon_<language>.txt` — Panorama UI 专用本地化
 
 ```
-resource/
-├── addon_english.txt      # 英文
-├── addon_schinese.txt     # 简体中文
-├── addon_tchinese.txt     # 繁体中文
-├── addon_japanese.txt     # 日文
-└── ...                    # 其他语言
+<addon_name>/
+├── resource/
+│   ├── addon_english.txt      # 英文
+│   ├── addon_schinese.txt     # 简体中文
+│   └── ...
+└── panorama/
+    └── localization/
+        ├── addon_english.txt  # 英文
+        ├── addon_schinese.txt # 简体中文
+        └── ...
 ```
 
 以下语言有支持：brazilian、bulgarian、czech、danish、dutch、english、finnish、french、german、greek、hungarian、italian、japanese、korean、koreana、latam、norwegian、polish、portuguese、romanian、russian、schinese、spanish、swedish、tchinese、thai、turkish、ukrainian、vietnamese。
 
 如果语言缺失部分键值对，默认会使用英文的键值对。
+
 ## 文件结构
 
-所有本地化文件使用统一的 KV 结构：
+### resource/ 格式
+
+`resource/` 下的本地化文件使用以下 KV 结构：
 
 ```kv
 "lang"
@@ -36,6 +46,7 @@ resource/
 - `"Language"` 的值必须与文件名中的语言标识一致（如 `addon_schinese.txt` 中为 `"SChinese"`）
 - `"Tokens"` 包含所有本地化键值对
 - 键名始终使用英文，仅值需要翻译
+- 如果 Dota2 自己也有本地化键，自定义游戏内的键值对优先级更高。
 
 ## 键名约定
 
@@ -148,3 +159,21 @@ resource/
 - 文件编码为 UTF-8
 - 支持 `//` 单行注释，可用于标记废弃的键
 - **不要**使用 `#base` 或 `#include`，它们对本地化文本无效。
+
+## Panorama 本地化文件
+
+Panorama UI 使用独立的本地化文件，位于 `game/dota_addons/<addon_name>/panorama/localization/` 目录下，命名规则与 `resource/` 相同（`addon_<language>.txt`）。
+
+覆盖原生的部分文本（如“无视减益免疫”）必须放在 Panorama 本地化文件中才能生效。
+
+文件结构与 `resource/` 下的不同——根键为 `"dota"`，直接包含键值对列表：
+
+```kv
+"dota"
+{
+    "addon_game_name"    "My Custom Game"
+    
+    "DOTA_Tooltip_ability_custom_fireball"              "Fireball"
+    "DOTA_Tooltip_ability_custom_fireball_Description"  "Launches a fireball..."
+}
+```
