@@ -1,6 +1,6 @@
 # 本地化文本文件
 
-Dota 2 自定义游戏使用 KV 格式的本地化文件来定义游戏名称、技能描述、修饰符文本、HUD 字符串等。
+Dota 2 自定义游戏使用 KV 格式的本地化文件来定义游戏名称、技能描述、修饰器文本、HUD 字符串等。
 
 ## 文件位置与命名
 
@@ -117,7 +117,7 @@ Dota 2 自定义游戏使用 KV 格式的本地化文件来定义游戏名称、
         "DOTA_Tooltip_ability_custom_fireball_Lore"         "The ancient flames consume all in their path."
         "DOTA_Tooltip_ability_custom_fireball_Note0"        "Does not affect allies."
         
-        // 修饰符
+        // 修饰器
         "DOTA_Tooltip_modifier_custom_burn"                 "Burning"
         "DOTA_Tooltip_modifier_custom_burn_Description"     "Taking <font color='#70EA72'>%dps%</font> damage per second."
         

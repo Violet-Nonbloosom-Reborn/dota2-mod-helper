@@ -4,7 +4,7 @@
 
 本仓库包含一个 Dota 2 自定义游戏开发辅助 Agent Skill。该 Skill 提供以下领域的指引、代码模式和参考文档：
 
-- **KeyValue (KV)** 文件 — 技能、单位、物品、修饰符定义
+- **KeyValue (KV)** 文件 — 技能、单位、物品、修饰器定义
 - **Lua (VScript)** — 服务端游戏逻辑
 - **Panorama** — 客户端 UI（XML、JavaScript、CSS）
 
@@ -26,10 +26,10 @@ dota2-mod-helper/
 
 本 Skill 涵盖三种语言/技术：
 
-| 领域 | 语言 | 文件类型 | 用途 |
+| 领域 | 语言 | 文件类型 | 用途             |
 |------|------|----------|------|
-| 数据定义 | KeyValue (KV) | `.txt` | 技能、单位、物品、修饰符定义 |
-| 服务端逻辑 | Lua | `.lua` | VScript 游戏逻辑 |
+| 数据定义 | KeyValue (KV) | `.txt` | 技能、单位、物品、修饰器定义 |
+| 服务端逻辑 | Lua | `.lua` | VScript 游戏逻辑   |
 | 客户端 UI | XML + JavaScript + CSS | `.xml`, `.js`, `.css` | Panorama UI 面板 |
 
 **注意**：本 Skill 不包含 API 参考（函数、常量、枚举）。API 参考维护在独立的 Skill `dota2-script-ref`（仓库：`violet-nonblossom-reborn/dota2-script-ref`）中。

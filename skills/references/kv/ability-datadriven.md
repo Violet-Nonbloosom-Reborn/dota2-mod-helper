@@ -35,7 +35,7 @@
 | `AbilityBehavior` | 行为标志，空格和 `\|` 分隔 |
 | `AbilityTextureName` | UI 图标，可借用其他技能图标 |
 | `ID` | 数据驱动技能不需要此字段 |
-| `Modifiers` | 数据驱动技能独有，定义技能关联的修饰符 |
+| `Modifiers` | 数据驱动技能独有，定义技能关联的修饰器 |
 
 ## 行为标志 (Behavior Flags)
 
@@ -83,7 +83,7 @@
 | `OnChannelFinish` | 引导完成 |
 | `OnChannelInterrupted` | 引导被打断 |
 | `OnChannelSucceeded` | 引导成功 |
-| `OnCreated` | 修饰符创建时 |
+| `OnCreated` | 修饰器创建时 |
 | `OnEquip` | 装备时 |
 | `OnOwnerSpawned` | 拥有者生成时 |
 | `OnOwnerDied` | 拥有者死亡时 |
@@ -110,32 +110,32 @@
 
 每个事件块内可包含一个或多个动作：
 
-| 动作 | 参数 | 说明 |
-|------|------|------|
-| `Damage` | Target, Type, Damage, MinDamage, MaxDamage, CurrentHealthPercentBasedDamage, MaxHealthPercentBasedDamage | 造成伤害 |
-| `Heal` | HealAmount, Target | 治疗 |
-| `Stun` | Target, Duration | 眩晕 |
-| `ApplyModifier` | Target, ModifierName | 施加修饰符 |
-| `RemoveModifier` | Target, ModifierName | 移除修饰符 |
-| `AttachEffect` | EffectName, EffectAttachType, Target, ControlPoints, EffectRadius, EffectDurationScale, EffectLifeDurationScale, EffectColorA, EffectColorB, EffectAlphaScale | 附加粒子特效 |
-| `FireEffect` | 同 AttachEffect | 发射粒子特效 |
-| `FireSound` | EffectName, Target | 播放音效 |
-| `Blink` | Target | 闪烁 |
-| `Knockback` | Target, Center, Duration, Distance, Height, IsFixedDistance, ShouldStun | 击退 |
-| `SpawnUnit` | UnitName, UnitCount, UnitLimit, SpawnRadius, Duration, Target, GrantsGold, GrantsXP | 生成单位 |
-| `CreateThinker` | Target, ModifierName | 创建思考者（地面区域效果） |
-| `LinearProjectile` | Target, EffectName, MoveSpeed, StartRadius, EndRadius, FixedDistance, StartPosition, TargetTeams, TargetTypes, TargetFlags, HasFrontalCone, ProvidesVision, VisionRadius | 直线弹道 |
-| `TrackingProjectile` | Target, EffectName, Dodgeable, ProvidesVision, VisionRadius, MoveSpeed, SourceAttachment | 追踪弹道 |
-| `CleaveAttack` | CleavePercent, CleaveRadius | 溅射攻击 |
-| `Lifesteal` | Target, LifestealPercent | 生命偷取 |
-| `AddAbility` | Target, AbilityName | 添加技能（等级 0） |
-| `RemoveAbility` | Target, AbilityName | 移除技能 |
-| `LevelUpAbility` | Target, AbilityName | 技能升级 |
-| `DestroyTrees` | Target, Radius | 摧毁树木 |
-| `DelayedAction` | Delay, Action | 延迟执行动作 |
-| `Random` | Chance, PseudoRandom, OnSuccess, OnFailure | 概率触发 |
-| `ActOnTargets` | Target, Action | 对目标执行动作 |
-| `RunScript` | Target, ScriptFile, Function | 执行 Lua 脚本 |
+| 动作                   | 参数                                                                                                                                                                       | 说明            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| `Damage`             | Target, Type, Damage, MinDamage, MaxDamage, CurrentHealthPercentBasedDamage, MaxHealthPercentBasedDamage                                                                 | 造成伤害          |
+| `Heal`               | HealAmount, Target                                                                                                                                                       | 治疗            |
+| `Stun`               | Target, Duration                                                                                                                                                         | 眩晕            |
+| `ApplyModifier`      | Target, ModifierName                                                                                                                                                     | 施加修饰器         |
+| `RemoveModifier`     | Target, ModifierName                                                                                                                                                     | 移除修饰器         |
+| `AttachEffect`       | EffectName, EffectAttachType, Target, ControlPoints, EffectRadius, EffectDurationScale, EffectLifeDurationScale, EffectColorA, EffectColorB, EffectAlphaScale            | 附加粒子特效        |
+| `FireEffect`         | 同 AttachEffect                                                                                                                                                           | 发射粒子特效        |
+| `FireSound`          | EffectName, Target                                                                                                                                                       | 播放音效          |
+| `Blink`              | Target                                                                                                                                                                   | 闪烁            |
+| `Knockback`          | Target, Center, Duration, Distance, Height, IsFixedDistance, ShouldStun                                                                                                  | 击退            |
+| `SpawnUnit`          | UnitName, UnitCount, UnitLimit, SpawnRadius, Duration, Target, GrantsGold, GrantsXP                                                                                      | 生成单位          |
+| `CreateThinker`      | Target, ModifierName                                                                                                                                                     | 创建思考者（地面区域效果） |
+| `LinearProjectile`   | Target, EffectName, MoveSpeed, StartRadius, EndRadius, FixedDistance, StartPosition, TargetTeams, TargetTypes, TargetFlags, HasFrontalCone, ProvidesVision, VisionRadius | 直线弹道          |
+| `TrackingProjectile` | Target, EffectName, Dodgeable, ProvidesVision, VisionRadius, MoveSpeed, SourceAttachment                                                                                 | 追踪弹道          |
+| `CleaveAttack`       | CleavePercent, CleaveRadius                                                                                                                                              | 溅射攻击          |
+| `Lifesteal`          | Target, LifestealPercent                                                                                                                                                 | 生命偷取          |
+| `AddAbility`         | Target, AbilityName                                                                                                                                                      | 添加技能（等级 0）    |
+| `RemoveAbility`      | Target, AbilityName                                                                                                                                                      | 移除技能          |
+| `LevelUpAbility`     | Target, AbilityName                                                                                                                                                      | 技能升级          |
+| `DestroyTrees`       | Target, Radius                                                                                                                                                           | 摧毁树木          |
+| `DelayedAction`      | Delay, Action                                                                                                                                                            | 延迟执行动作        |
+| `Random`             | Chance, PseudoRandom, OnSuccess, OnFailure                                                                                                                               | 概率触发          |
+| `ActOnTargets`       | Target, Action                                                                                                                                                           | 对目标执行动作       |
+| `RunScript`          | Target, ScriptFile, Function                                                                                                                                             | 执行 Lua 脚本     |
 
 ### 事件-动作示例
 
@@ -234,11 +234,11 @@
 - `DOTA_UNIT_TARGET_FLAG_CHECK_DISABLE_HELP`
 - `DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD`
 
-## 修饰符 (Modifiers)
+## 修饰器 (Modifiers)
 
-修饰符是数据驱动技能的核心，定义技能的效果。
+修饰器是数据驱动技能的核心，定义技能的效果。
 
-### 修饰符属性
+### 修饰器属性
 
 | 属性 | 值类型 | 说明 |
 |------|--------|------|
@@ -248,7 +248,7 @@
 | `IsPurgable` | Boolean | 可被驱散 |
 | `Duration` | Float | 持续时间 |
 | `ThinkInterval` | Float | 思考间隔（秒） |
-| `Attributes` | Enum | 修饰符属性（见下） |
+| `Attributes` | Enum | 修饰器属性（见下） |
 | `EffectName` | String | 粒子特效路径 |
 | `EffectAttachType` | Enum | 特效附着方式 |
 | `TextureName` | String | 自定义图标 |
@@ -275,7 +275,7 @@
 - `ACT_DOTA_TELEPORT`
 - `ACT_DOTA_VICTORY`
 
-### 修饰符属性 (Properties)
+### 修饰器属性 (Properties)
 
 通过 `Properties` 块修改单位的数值属性：
 
@@ -331,7 +331,7 @@
 | `MODIFIER_PROPERTY_PERSISTENT_INVISIBILITY` | 永久隐身 |
 | `MODIFIER_PROPERTY_MODEL_CHANGE` | 模型改变 |
 
-### 修饰符状态 (States)
+### 修饰器状态 (States)
 
 状态是三值类型：`MODIFIER_STATE_VALUE_NO_ACTION`、`MODIFIER_STATE_VALUE_ENABLED`、`MODIFIER_STATE_VALUE_DISABLED`。
 
@@ -344,50 +344,50 @@
 
 **可用状态：**
 
-| 状态 | 说明 |
-|------|------|
-| `MODIFIER_STATE_STUNNED` | 眩晕 |
-| `MODIFIER_STATE_SILENCED` | 沉默 |
-| `MODIFIER_STATE_MUTED` | 默写（无法使用物品） |
-| `MODIFIER_STATE_ROOTED` | 束缚 |
-| `MODIFIER_STATE_DISARMED` | 缴械 |
-| `MODIFIER_STATE_HEXED` | 妖术 |
-| `MODIFIER_STATE_INVISIBLE` | 隐身 |
-| `MODIFIER_STATE_INVULNERABLE` | 无敌 |
-| `MODIFIER_STATE_MAGIC_IMMUNE` | 魔免 |
-| `MODIFIER_STATE_ATTACK_IMMUNE` | 攻击免疫 |
-| `MODIFIER_STATE_BLIND` | 致盲 |
-| `MODIFIER_STATE_FLYING` | 飞行 |
-| `MODIFIER_STATE_FROZEN` | 冰冻 |
-| `MODIFIER_STATE_NIGHTMARED` | 噩梦 |
-| `MODIFIER_STATE_PASSIVES_DISABLED` | 被动禁用 |
-| `MODIFIER_STATE_COMMAND_RESTRICTED` | 命令受限 |
-| `MODIFIER_STATE_NOT_ON_MINIMAP` | 小地图不可见 |
-| `MODIFIER_STATE_NO_HEALTH_BAR` | 不显示血条 |
-| `MODIFIER_STATE_UNSELECTABLE` | 不可选中 |
-| `MODIFIER_STATE_OUT_OF_GAME` | 离开游戏 |
-| `MODIFIER_STATE_NO_UNIT_COLLISION` | 无单位碰撞 |
-| `MODIFIER_STATE_PROVIDES_VISION` | 提供视野 |
-| `MODIFIER_STATE_CANNOT_MISS` | 不会丢失 |
-| `MODIFIER_STATE_EVADE_DISABLED` | 闪避禁用 |
-| `MODIFIER_STATE_BLOCK_DISABLED` | 格挡禁用 |
-| `MODIFIER_STATE_LOW_ATTACK_PRIORITY` | 低攻击优先级 |
-| `MODIFIER_STATE_DOMINATED` | 被控制 |
-| `MODIFIER_STATE_SOFT_DISARMED` | 软缴械 |
-| `MODIFIER_STATE_SPECIALLY_DENIABLE` | 特殊可否定 |
-| `MODIFIER_STATE_NO_TEAM_MOVE_TO` | 队友不可移动 |
-| `MODIFIER_STATE_NO_TEAM_SELECT` | 队友不可选中 |
-| `MODIFIER_STATE_NOT_ON_MINIMAP_FOR_ENEMIES` | 敌方小地图不可见 |
-| `MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY` | 仅用于寻路的飞行 |
+| 状态                                                | 说明         |
+| ------------------------------------------------- | ---------- |
+| `MODIFIER_STATE_STUNNED`                          | 眩晕         |
+| `MODIFIER_STATE_SILENCED`                         | 沉默         |
+| `MODIFIER_STATE_MUTED`                            | 默写（无法使用物品） |
+| `MODIFIER_STATE_ROOTED`                           | 束缚         |
+| `MODIFIER_STATE_DISARMED`                         | 缴械         |
+| `MODIFIER_STATE_HEXED`                            | 妖术         |
+| `MODIFIER_STATE_INVISIBLE`                        | 隐身         |
+| `MODIFIER_STATE_INVULNERABLE`                     | 无敌         |
+| `MODIFIER_STATE_MAGIC_IMMUNE`                     | 魔免         |
+| `MODIFIER_STATE_ATTACK_IMMUNE`                    | 攻击免疫       |
+| `MODIFIER_STATE_BLIND`                            | 致盲         |
+| `MODIFIER_STATE_FLYING`                           | 飞行         |
+| `MODIFIER_STATE_FROZEN`                           | 冰冻         |
+| `MODIFIER_STATE_NIGHTMARED`                       | 噩梦         |
+| `MODIFIER_STATE_PASSIVES_DISABLED`                | 被动禁用       |
+| `MODIFIER_STATE_COMMAND_RESTRICTED`               | 命令受限       |
+| `MODIFIER_STATE_NOT_ON_MINIMAP`                   | 小地图不可见     |
+| `MODIFIER_STATE_NO_HEALTH_BAR`                    | 不显示血条      |
+| `MODIFIER_STATE_UNSELECTABLE`                     | 不可选中       |
+| `MODIFIER_STATE_OUT_OF_GAME`                      | 离开游戏       |
+| `MODIFIER_STATE_NO_UNIT_COLLISION`                | 无单位碰撞      |
+| `MODIFIER_STATE_PROVIDES_VISION`                  | 提供视野       |
+| `MODIFIER_STATE_CANNOT_MISS`                      | 不会丢失       |
+| `MODIFIER_STATE_EVADE_DISABLED`                   | 闪避禁用       |
+| `MODIFIER_STATE_BLOCK_DISABLED`                   | 格挡禁用       |
+| `MODIFIER_STATE_LOW_ATTACK_PRIORITY`              | 低攻击优先级     |
+| `MODIFIER_STATE_DOMINATED`                        | 被控制        |
+| `MODIFIER_STATE_SOFT_DISARMED`                    | 软缴械        |
+| `MODIFIER_STATE_SPECIALLY_DENIABLE`               | 特殊可否定      |
+| `MODIFIER_STATE_NO_TEAM_MOVE_TO`                  | 队友不可移动     |
+| `MODIFIER_STATE_NO_TEAM_SELECT`                   | 队友不可选中     |
+| `MODIFIER_STATE_NOT_ON_MINIMAP_FOR_ENEMIES`       | 敌方小地图不可见   |
+| `MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY` | 仅用于寻路的飞行   |
 
-### 修饰符事件
+### 修饰器事件
 
-修饰符也可以响应事件：
+修饰器也可以响应事件：
 
 | 事件 | 说明 |
 |------|------|
-| `OnCreated` | 修饰符创建时 |
-| `OnDestroy` | 修饰符移除时 |
+| `OnCreated` | 修饰器创建时 |
+| `OnDestroy` | 修饰器移除时 |
 | `OnIntervalThink` | 思考间隔触发（需设置 ThinkInterval） |
 | `OnAttacked` | 拥有者被攻击 |
 | `OnAttackLanded` | 拥有者攻击命中（`%attack_damage` 为减免前伤害） |
@@ -403,7 +403,7 @@
 
 ## AbilitySpecial
 
-定义技能参数，可在修饰符中通过 `%name` 引用：
+定义技能参数，可在修饰器中通过 `%name` 引用：
 
 ```kv
 "AbilitySpecial"
@@ -426,7 +426,7 @@
 }
 ```
 
-在修饰符中使用：`"Duration" "%duration"`、`"Damage" "%damage"`
+在修饰器中使用：`"Duration" "%duration"`、`"Damage" "%damage"`
 
 数值随技能等级变化，空格分隔各等级值。
 

@@ -1,6 +1,6 @@
 ---
 name: dota2mod-helper
-description: Dota 2 自定义游戏开发辅助。适用于使用 Dota 2 Workshop Tools 开发自定义技能（DataDriven KV）、Lua 脚本（vscripts）、Panorama UI（XML、JavaScript、CSS），以及单位、物品、修饰符的 KeyValue 文件。包含代码模式、约定和自定义游戏开发工作流指引。
+description: Dota 2 自定义游戏开发辅助。适用于使用 Dota 2 Workshop Tools 开发自定义技能（DataDriven KV）、Lua 脚本（vscripts）、Panorama UI（XML、JavaScript、CSS），以及单位、物品、修饰器 KeyValue 文件。包含代码模式、约定和自定义游戏开发工作流指引。
 ---
 
 # Dota 2 Modding Helper
@@ -9,7 +9,7 @@ description: Dota 2 自定义游戏开发辅助。适用于使用 Dota 2 Worksho
 
 覆盖 Dota 2 自定义游戏开发的三个领域：
 
-- **KeyValue (KV)** — 技能、单位、物品、修饰符的数据定义
+- **KeyValue (KV)** — 技能、单位、物品、修饰器的数据定义
 - **Lua (VScript)** — 服务端游戏逻辑
 - **Panorama** — 客户端 UI（XML 布局、JavaScript、CSS）
 
@@ -23,7 +23,7 @@ Dota 2 自定义游戏采用前后端分离架构：
 │   ├── 技能 (abilities)   ├── JavaScript 面板
 │   ├── 单位 (units)       └── CSS 样式
 │   ├── 物品 (items)       └── (Panorama)
-│   └── 修饰符 (modifiers)
+│   └── 修饰器 (modifiers)
 └── Lua 脚本 (vscripts)
 ```
 
@@ -41,12 +41,12 @@ Dota 2 自定义游戏采用前后端分离架构：
 根据任务加载对应的参考文档：
 
 ### KV（KeyValue 数据定义）
-**何时阅读**：创建或编辑 `.txt` KV 格式的技能、单位、物品、修饰符定义时。
+**何时阅读**：创建或编辑 `.txt` KV 格式的技能、单位、物品、修饰器定义时。
 
 参阅 `references/kv/`：
 - `kv-format.md` — KV 文件格式规范（语法、注释、文件包含）
 - `localization.md` — 本地化文本文件（addon_*.txt 结构与键名约定）
-- `ability-datadriven.md` — 数据驱动技能系统（事件、动作、修饰符）
+- `ability-datadriven.md` — 数据驱动技能系统（事件、动作、修饰器）
 - 单位与英雄定义（待补充）
 - 自定义物品定义（待补充）
 
@@ -55,7 +55,7 @@ Dota 2 自定义游戏采用前后端分离架构：
 
 参阅 `references/lua/`：
 - Dota 2 Lua 脚本约定
-- 常用模式（创建单位、伤害、修饰符）
+- 常用模式（创建单位、伤害、修饰器）
 - 游戏模式与技能 Lua 模式
 - 服务端-客户端通信
 
@@ -134,7 +134,7 @@ ApplyDamage({
     ability = ability
 })
 
--- 施加修饰符
+-- 施加修饰器
 ApplyModifier({
     caster = caster,
     target = target,

@@ -129,5 +129,5 @@ KV 数据定义 (scripts/npc/)          Lua 脚本 (scripts/vscripts/)
 ```
 
 - KV 文件定义静态数据（技能参数、单位属性、物品数值）
-- Lua 脚本实现动态逻辑（技能行为、修饰符效果、AI 决策）
+- Lua 脚本实现动态逻辑（技能行为、修饰器效果、AI 决策）
 - 两者通过名称关联（如 KV 中 `"BaseClass" "ability_lua"` + `"ScriptFile" "abilities/my_ability.lua"`）
