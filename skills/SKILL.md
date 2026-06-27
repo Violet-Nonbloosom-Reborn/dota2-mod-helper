@@ -46,10 +46,9 @@ Dota 2 自定义游戏采用前后端分离架构：
 参阅 `references/kv/`：
 - `kv-format.md` — KV 文件格式规范（语法、注释、文件包含）
 - `localization.md` — 本地化文本文件（addon_*.txt 结构与键名约定）
-- DataDriven 技能模式（待补充）
+- `ability-datadriven.md` — 数据驱动技能系统（事件、动作、修饰符）
 - 单位与英雄定义（待补充）
 - 自定义物品定义（待补充）
-- 修饰符属性与状态（待补充）
 
 ### Lua (VScript)
 **何时阅读**：编写服务端游戏逻辑、技能处理器、游戏模式规则时。

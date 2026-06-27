@@ -1,0 +1,807 @@
+# 数据驱动技能 (Data Driven Abilities)
+
+数据驱动技能系统允许通过 KV 文件创建自定义技能，无需编写 Lua 脚本。技能的行为通过事件-动作机制定义。
+
+来源: https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/Abilities_Data_Driven
+
+## 基本结构
+
+```kv
+"ability_name"
+{
+    "BaseClass"             "ability_datadriven"
+    "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+    "AbilityTextureName"    "axe_battle_hunger"
+
+    "Modifiers"
+    {
+        "modifier_name"
+        {
+            "Passive"   "1"
+            "OnCreated"
+            {
+                // 动作
+            }
+        }
+    }
+}
+```
+
+### 核心字段
+
+| 字段 | 说明 |
+|------|------|
+| `BaseClass` | 必须为 `"ability_datadriven"` |
+| `AbilityBehavior` | 行为标志，空格和 `\|` 分隔 |
+| `AbilityTextureName` | UI 图标，可借用其他技能图标 |
+| `ID` | 数据驱动技能不需要此字段 |
+| `Modifiers` | 数据驱动技能独有，定义技能关联的修饰符 |
+
+## 行为标志 (Behavior Flags)
+
+常用标志：
+
+| 标志 | 说明 |
+|------|------|
+| `DOTA_ABILITY_BEHAVIOR_HIDDEN` | 隐藏，不可施放 |
+| `DOTA_ABILITY_BEHAVIOR_PASSIVE` | 被动技能 |
+| `DOTA_ABILITY_BEHAVIOR_NO_TARGET` | 无需目标，按键即释放 |
+| `DOTA_ABILITY_BEHAVIOR_UNIT_TARGET` | 需要单位目标 |
+| `DOTA_ABILITY_BEHAVIOR_POINT` | 点击地面释放 |
+| `DOTA_ABILITY_BEHAVIOR_AOE` | 显示范围指示器 |
+| `DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE` | 不可学习 |
+| `DOTA_ABILITY_BEHAVIOR_CHANNELLED` | 引导技能 |
+| `DOTA_ABILITY_BEHAVIOR_ITEM` | 物品技能 |
+| `DOTA_ABILITY_BEHAVIOR_TOGGLE` | 开关技能 |
+| `DOTA_ABILITY_BEHAVIOR_DIRECTIONAL` | 方向性技能 |
+| `DOTA_ABILITY_BEHAVIOR_IMMEDIATE` | 立即执行，不进入队列 |
+| `DOTA_ABILITY_BEHAVIOR_AUTOCAST` | 可自动施放 |
+| `DOTA_ABILITY_BEHAVIOR_AURA` | 光环技能 |
+| `DOTA_ABILITY_BEHAVIOR_ATTACK` | 攻击类技能 |
+| `DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES` | 被束缚时不可用 |
+| `DOTA_ABILITY_BEHAVIOR_UNRESTRICTED` | 命令受限时仍可使用 |
+| `DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL` | 不中断引导 |
+| `DOTA_ABILITY_BEHAVIOR_DONT_ALERT_TARGET` | 不警告目标敌人 |
+| `DOTA_ABILITY_BEHAVIOR_RUNE_TARGET` | 目标为神符 |
+
+组合示例：`"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_PASSIVE"`
+
+## 事件与动作
+
+技能通过事件触发动作。
+
+### 事件 (Events)
+
+事件是动作的触发条件：
+
+| 事件 | 触发时机 |
+|------|----------|
+| `OnSpellStart` | 技能开始施放 |
+| `OnAbilityPhaseStart` | 技能前摇开始（转向目标前） |
+| `OnAbilityStart` | 技能开始 |
+| `OnAbilityEndChannel` | 引导结束 |
+| `OnChannelFinish` | 引导完成 |
+| `OnChannelInterrupted` | 引导被打断 |
+| `OnChannelSucceeded` | 引导成功 |
+| `OnCreated` | 修饰符创建时 |
+| `OnEquip` | 装备时 |
+| `OnOwnerSpawned` | 拥有者生成时 |
+| `OnOwnerDied` | 拥有者死亡时 |
+| `OnRespawn` | 拥有者复活时 |
+| `OnAttack` | 发起攻击 |
+| `OnAttackAllied` | 攻击友方 |
+| `OnAttackFailed` | 攻击未命中 |
+| `OnToggleOn` / `OnToggleOff` | 开关切换 |
+| `OnUpgrade` | 技能升级时 |
+| `OnHealReceived` | 受到治疗 |
+| `OnHealthGained` | 生命值变化 |
+| `OnManaGained` | 魔法值变化 |
+| `OnSpentMana` | 消耗魔法 |
+| `OnHeroKilled` | 击杀英雄 |
+| `OnOrder` | 收到命令 |
+| `OnUnitMoved` | 单位移动 |
+| `OnTeleported` / `OnTeleporting` | 传送 |
+| `OnStateChanged` | 状态变化 |
+| `OnProjectileDodge` | 弹道被闪避 |
+| `OnProjectileFinish` | 弹道结束 |
+| `OnProjectileHitUnit` | 弹道命中单位 |
+
+### 动作 (Actions)
+
+每个事件块内可包含一个或多个动作：
+
+| 动作 | 参数 | 说明 |
+|------|------|------|
+| `Damage` | Target, Type, Damage, MinDamage, MaxDamage, CurrentHealthPercentBasedDamage, MaxHealthPercentBasedDamage | 造成伤害 |
+| `Heal` | HealAmount, Target | 治疗 |
+| `Stun` | Target, Duration | 眩晕 |
+| `ApplyModifier` | Target, ModifierName | 施加修饰符 |
+| `RemoveModifier` | Target, ModifierName | 移除修饰符 |
+| `AttachEffect` | EffectName, EffectAttachType, Target, ControlPoints, EffectRadius, EffectDurationScale, EffectLifeDurationScale, EffectColorA, EffectColorB, EffectAlphaScale | 附加粒子特效 |
+| `FireEffect` | 同 AttachEffect | 发射粒子特效 |
+| `FireSound` | EffectName, Target | 播放音效 |
+| `Blink` | Target | 闪烁 |
+| `Knockback` | Target, Center, Duration, Distance, Height, IsFixedDistance, ShouldStun | 击退 |
+| `SpawnUnit` | UnitName, UnitCount, UnitLimit, SpawnRadius, Duration, Target, GrantsGold, GrantsXP | 生成单位 |
+| `CreateThinker` | Target, ModifierName | 创建思考者（地面区域效果） |
+| `LinearProjectile` | Target, EffectName, MoveSpeed, StartRadius, EndRadius, FixedDistance, StartPosition, TargetTeams, TargetTypes, TargetFlags, HasFrontalCone, ProvidesVision, VisionRadius | 直线弹道 |
+| `TrackingProjectile` | Target, EffectName, Dodgeable, ProvidesVision, VisionRadius, MoveSpeed, SourceAttachment | 追踪弹道 |
+| `CleaveAttack` | CleavePercent, CleaveRadius | 溅射攻击 |
+| `Lifesteal` | Target, LifestealPercent | 生命偷取 |
+| `AddAbility` | Target, AbilityName | 添加技能（等级 0） |
+| `RemoveAbility` | Target, AbilityName | 移除技能 |
+| `LevelUpAbility` | Target, AbilityName | 技能升级 |
+| `DestroyTrees` | Target, Radius | 摧毁树木 |
+| `DelayedAction` | Delay, Action | 延迟执行动作 |
+| `Random` | Chance, PseudoRandom, OnSuccess, OnFailure | 概率触发 |
+| `ActOnTargets` | Target, Action | 对目标执行动作 |
+| `RunScript` | Target, ScriptFile, Function | 执行 Lua 脚本 |
+
+### 事件-动作示例
+
+```kv
+"OnSpellStart"
+{
+    "FireSound"
+    {
+        "EffectName"    "SoundEventName"
+        "Target"        "CASTER"
+    }
+}
+```
+
+## 目标值 (Target Values)
+
+### 单目标
+
+| 值 | 说明 |
+|----|------|
+| `CASTER` | 施法者 |
+| `TARGET` | 当前目标 |
+| `POINT` | 点击位置 |
+| `ATTACKER` | 攻击者 |
+| `UNIT` | 关联单位 |
+
+注意：这些名称在不同事件中含义可能不同，需要实验验证。
+
+### 多目标
+
+使用块结构选择范围内多个目标：
+
+```kv
+"Target"
+{
+    "Center"        "CASTER"
+    "Radius"        "300"
+    "Teams"         "DOTA_UNIT_TARGET_TEAM_ENEMY"
+    "Types"         "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
+    "Flags"         "DOTA_UNIT_TARGET_FLAG_NOT_MAGIC_IMMUNE_ALLIES"
+    "MaxTargets"    "3"
+    "Random"        "1"
+}
+```
+
+| 子键 | 说明 |
+|------|------|
+| `Center` | 范围中心：CASTER, TARGET, POINT, PROJECTILE, UNIT, ATTACKER |
+| `Radius` | 搜索半径（单位） |
+| `Teams` | 队伍筛选 |
+| `Types` / `ExcludeTypes` | 类型筛选 |
+| `Flags` / `ExcludeFlags` | 标志筛选 |
+| `MaxTargets` | 最大目标数 |
+| `Random` | 超出 MaxTargets 时是否随机选择 |
+| `ScriptSelectPoints` | 脚本选择点：ScriptFile, Function, Radius, Count |
+
+**Teams 可选值：**
+- `DOTA_UNIT_TARGET_TEAM_ENEMY`
+- `DOTA_UNIT_TARGET_TEAM_FRIENDLY`
+- `DOTA_UNIT_TARGET_TEAM_BOTH`
+- `DOTA_UNIT_TARGET_TEAM_CUSTOM`
+- `DOTA_UNIT_TARGET_TEAM_NONE`
+
+**Types 可选值：**
+- `DOTA_UNIT_TARGET_ALL`
+- `DOTA_UNIT_TARGET_HERO`
+- `DOTA_UNIT_TARGET_BASIC`
+- `DOTA_UNIT_TARGET_CREEP`
+- `DOTA_UNIT_TARGET_BUILDING`
+- `DOTA_UNIT_TARGET_MECHANICAL`
+- `DOTA_UNIT_TARGET_COURIER`
+- `DOTA_UNIT_TARGET_OTHER`
+- `DOTA_UNIT_TARGET_TREE`
+- `DOTA_UNIT_TARGET_CUSTOM`
+- `DOTA_UNIT_TARGET_NONE`
+
+**Flags 可选值：**
+- `DOTA_UNIT_TARGET_FLAG_NONE`
+- `DOTA_UNIT_TARGET_FLAG_DEAD`
+- `DOTA_UNIT_TARGET_FLAG_NOT_ATTACK_IMMUNE`
+- `DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES`
+- `DOTA_UNIT_TARGET_FLAG_NOT_MAGIC_IMMUNE_ALLIES`
+- `DOTA_UNIT_TARGET_FLAG_INVULNERABLE`
+- `DOTA_UNIT_TARGET_FLAG_FOW_VISIBLE`
+- `DOTA_UNIT_TARGET_FLAG_NO_INVIS`
+- `DOTA_UNIT_TARGET_FLAG_NOT_ANCIENTS`
+- `DOTA_UNIT_TARGET_FLAG_NOT_ILLUSIONS`
+- `DOTA_UNIT_TARGET_FLAG_NOT_SUMMONED`
+- `DOTA_UNIT_TARGET_FLAG_NOT_DOMINATED`
+- `DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO`
+- `DOTA_UNIT_TARGET_FLAG_NOT_NIGHTMARED`
+- `DOTA_UNIT_TARGET_FLAG_MELEE_ONLY`
+- `DOTA_UNIT_TARGET_FLAG_RANGED_ONLY`
+- `DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED`
+- `DOTA_UNIT_TARGET_FLAG_MANA_ONLY`
+- `DOTA_UNIT_TARGET_FLAG_CHECK_DISABLE_HELP`
+- `DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD`
+
+## 修饰符 (Modifiers)
+
+修饰符是数据驱动技能的核心，定义技能的效果。
+
+### 修饰符属性
+
+| 属性 | 值类型 | 说明 |
+|------|--------|------|
+| `Passive` | Boolean | 自动施加给拥有者 |
+| `IsHidden` | Boolean | 隐藏不显示 |
+| `IsBuff` / `IsDebuff` | Boolean | 增益/减益标记 |
+| `IsPurgable` | Boolean | 可被驱散 |
+| `Duration` | Float | 持续时间 |
+| `ThinkInterval` | Float | 思考间隔（秒） |
+| `Attributes` | Enum | 修饰符属性（见下） |
+| `EffectName` | String | 粒子特效路径 |
+| `EffectAttachType` | Enum | 特效附着方式 |
+| `TextureName` | String | 自定义图标 |
+| `OverrideAnimation` | Enum | 覆盖动画 |
+
+**Attributes 可选值：**
+- `MODIFIER_ATTRIBUTE_NONE`
+- `MODIFIER_ATTRIBUTE_MULTIPLE` — 可叠加
+- `MODIFIER_ATTRIBUTE_PERMANENT` — 永久
+- `MODIFIER_ATTRIBUTE_IGNORE_INVULNERABLE`
+
+**EffectAttachType 可选值：**
+- `follow_origin`
+- `follow_overhead`
+- `start_at_customorigin`
+- `world_origin`
+
+**OverrideAnimation 可选值：**
+- `ACT_DOTA_ATTACK`
+- `ACT_DOTA_CAST_ABILITY_1` ~ `ACT_DOTA_CAST_ABILITY_6`
+- `ACT_DOTA_DISABLED`
+- `ACT_DOTA_RUN`
+- `ACT_DOTA_SPAWN`
+- `ACT_DOTA_TELEPORT`
+- `ACT_DOTA_VICTORY`
+
+### 修饰符属性 (Properties)
+
+通过 `Properties` 块修改单位的数值属性：
+
+```kv
+"Properties"
+{
+    "MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"    "-20"
+    "MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"    "-20"
+}
+```
+
+数值可使用 `%name` 语法引用 `AbilitySpecial` 中的值，随技能等级变化。
+
+**常用 Properties：**
+
+| 属性 | 说明 |
+|------|------|
+| `MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE` | 移动速度百分比加成 |
+| `MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT` | 移动速度固定加成 |
+| `MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE` | 绝对移动速度 |
+| `MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT` | 攻击速度加成 |
+| `MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT` | 基础攻击间隔 |
+| `MODIFIER_PROPERTY_BASEATTACK_BONUSDAMAGE` | 基础攻击力加成 |
+| `MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE` | 攻击前伤害加成 |
+| `MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE` | 暴击倍率 |
+| `MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS` | 护甲加成 |
+| `MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS` | 魔法抗性加成 |
+| `MODIFIER_PROPERTY_EVASION_CONSTANT` | 闪避概率 |
+| `MODIFIER_PROPERTY_HEALTH_BONUS` | 生命值加成 |
+| `MODIFIER_PROPERTY_MANA_BONUS` | 魔法值加成 |
+| `MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT` | 生命回复固定值 |
+| `MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE` | 生命回复百分比 |
+| `MODIFIER_PROPERTY_MANA_REGEN_CONSTANT` | 魔法回复固定值 |
+| `MODIFIER_PROPERTY_MANA_REGEN_PERCENTAGE` | 魔法回复百分比 |
+| `MODIFIER_PROPERTY_ATTACK_RANGE_BONUS` | 攻击距离加成 |
+| `MODIFIER_PROPERTY_BONUS_DAY_VISION` | 白天视野加成 |
+| `MODIFIER_PROPERTY_BONUS_NIGHT_VISION` | 夜晚视野加成 |
+| `MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE` | 造成伤害百分比 |
+| `MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE` | 受到伤害百分比 |
+| `MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_PERCENTAGE` | 受到物理伤害百分比 |
+| `MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK` | 固定伤害格挡 |
+| `MODIFIER_PROPERTY_COOLDOWN_REDUCTION_CONSTANT` | 冷却时间减少 |
+| `MODIFIER_PROPERTY_DEATHGOLDCOST` | 死亡金钱损失 |
+| `MODIFIER_PROPERTY_RESPAWNTIME` | 复活时间 |
+| `MODIFIER_PROPERTY_STATS_STRENGTH_BONUS` | 力量加成 |
+| `MODIFIER_PROPERTY_STATS_AGILITY_BONUS` | 敏捷加成 |
+| `MODIFIER_PROPERTY_STATS_INTELLECT_BONUS` | 智力加成 |
+| `MODIFIER_PROPERTY_IS_ILLUSION` | 标记为幻象 |
+| `MODIFIER_PROPERTY_IS_SCEPTER` | 标记为装备神杖 |
+| `MODIFIER_PROPERTY_DISABLE_AUTOATTACK` | 禁用自动攻击 |
+| `MODIFIER_PROPERTY_DISABLE_HEALING` | 禁用治疗 |
+| `MODIFIER_PROPERTY_INVISIBILITY_LEVEL` | 隐身等级 |
+| `MODIFIER_PROPERTY_PERSISTENT_INVISIBILITY` | 永久隐身 |
+| `MODIFIER_PROPERTY_MODEL_CHANGE` | 模型改变 |
+
+### 修饰符状态 (States)
+
+状态是三值类型：`MODIFIER_STATE_VALUE_NO_ACTION`、`MODIFIER_STATE_VALUE_ENABLED`、`MODIFIER_STATE_VALUE_DISABLED`。
+
+```kv
+"States"
+{
+    "MODIFIER_STATE_STUNNED"    "MODIFIER_STATE_VALUE_ENABLED"
+}
+```
+
+**可用状态：**
+
+| 状态 | 说明 |
+|------|------|
+| `MODIFIER_STATE_STUNNED` | 眩晕 |
+| `MODIFIER_STATE_SILENCED` | 沉默 |
+| `MODIFIER_STATE_MUTED` | 默写（无法使用物品） |
+| `MODIFIER_STATE_ROOTED` | 束缚 |
+| `MODIFIER_STATE_DISARMED` | 缴械 |
+| `MODIFIER_STATE_HEXED` | 妖术 |
+| `MODIFIER_STATE_INVISIBLE` | 隐身 |
+| `MODIFIER_STATE_INVULNERABLE` | 无敌 |
+| `MODIFIER_STATE_MAGIC_IMMUNE` | 魔免 |
+| `MODIFIER_STATE_ATTACK_IMMUNE` | 攻击免疫 |
+| `MODIFIER_STATE_BLIND` | 致盲 |
+| `MODIFIER_STATE_FLYING` | 飞行 |
+| `MODIFIER_STATE_FROZEN` | 冰冻 |
+| `MODIFIER_STATE_NIGHTMARED` | 噩梦 |
+| `MODIFIER_STATE_PASSIVES_DISABLED` | 被动禁用 |
+| `MODIFIER_STATE_COMMAND_RESTRICTED` | 命令受限 |
+| `MODIFIER_STATE_NOT_ON_MINIMAP` | 小地图不可见 |
+| `MODIFIER_STATE_NO_HEALTH_BAR` | 不显示血条 |
+| `MODIFIER_STATE_UNSELECTABLE` | 不可选中 |
+| `MODIFIER_STATE_OUT_OF_GAME` | 离开游戏 |
+| `MODIFIER_STATE_NO_UNIT_COLLISION` | 无单位碰撞 |
+| `MODIFIER_STATE_PROVIDES_VISION` | 提供视野 |
+| `MODIFIER_STATE_CANNOT_MISS` | 不会丢失 |
+| `MODIFIER_STATE_EVADE_DISABLED` | 闪避禁用 |
+| `MODIFIER_STATE_BLOCK_DISABLED` | 格挡禁用 |
+| `MODIFIER_STATE_LOW_ATTACK_PRIORITY` | 低攻击优先级 |
+| `MODIFIER_STATE_DOMINATED` | 被控制 |
+| `MODIFIER_STATE_SOFT_DISARMED` | 软缴械 |
+| `MODIFIER_STATE_SPECIALLY_DENIABLE` | 特殊可否定 |
+| `MODIFIER_STATE_NO_TEAM_MOVE_TO` | 队友不可移动 |
+| `MODIFIER_STATE_NO_TEAM_SELECT` | 队友不可选中 |
+| `MODIFIER_STATE_NOT_ON_MINIMAP_FOR_ENEMIES` | 敌方小地图不可见 |
+| `MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY` | 仅用于寻路的飞行 |
+
+### 修饰符事件
+
+修饰符也可以响应事件：
+
+| 事件 | 说明 |
+|------|------|
+| `OnCreated` | 修饰符创建时 |
+| `OnDestroy` | 修饰符移除时 |
+| `OnIntervalThink` | 思考间隔触发（需设置 ThinkInterval） |
+| `OnAttacked` | 拥有者被攻击 |
+| `OnAttackLanded` | 拥有者攻击命中（`%attack_damage` 为减免前伤害） |
+| `OnAttackStart` | 拥有者开始攻击（动画开始时） |
+| `OnDealDamage` | 拥有者造成伤害（`%attack_damage` 为减免后伤害） |
+| `OnTakeDamage` | 拥有者受到伤害（`%attack_damage` 为减免后伤害） |
+| `OnKill` | 击杀时 |
+| `OnDeath` | 死亡时 |
+| `OnOrbFire` | 法球发射 |
+| `OnOrbImpact` | 法球命中 |
+| `OnAbilityExecuted` | 技能执行 |
+| `Orb` | 法球配置块 |
+
+## AbilitySpecial
+
+定义技能参数，可在修饰符中通过 `%name` 引用：
+
+```kv
+"AbilitySpecial"
+{
+    "01"
+    {
+        "var_type"    "FIELD_INTEGER"
+        "radius"      "250"
+    }
+    "02"
+    {
+        "var_type"    "FIELD_FLOAT"
+        "duration"    "16.0"
+    }
+    "03"
+    {
+        "var_type"    "FIELD_INTEGER"
+        "damage"      "118 128 138 158"
+    }
+}
+```
+
+在修饰符中使用：`"Duration" "%duration"`、`"Damage" "%damage"`
+
+数值随技能等级变化，空格分隔各等级值。
+
+## 预缓存 (Precaching)
+
+数据驱动技能（`BaseClass` 为 `ability_datadriven`）**不需要** `precache` 块。
+
+注意事项：
+- 粒子特效需要完整路径和扩展名，如 `particles/units/heroes/hero_alchemist/alchemist_acid_spray.vpcf`（不需要 `_c` 后缀）
+- 音效只需事件名称
+
+## 完整示例
+
+### 被动视觉特效
+
+```kv
+"fx_test_ability"
+{
+    "BaseClass"             "ability_datadriven"
+    "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+    "AbilityTextureName"    "axe_battle_hunger"
+
+    "Modifiers"
+    {
+        "fx_test_modifier"
+        {
+            "Passive"   "1"
+            "OnCreated"
+            {
+                "AttachEffect"
+                {
+                    "Target"                "CASTER"
+                    "EffectName"            "particles/econ/generic/generic_buff_1/generic_buff_1.vpcf"
+                    "EffectAttachType"      "follow_overhead"
+                    "EffectLifeDurationScale" "1"
+                    "EffectColorA"          "255 255 0"
+                }
+            }
+        }
+    }
+}
+```
+
+### AOE 持续伤害（酸雾）
+
+死亡后创建酸雾区域，降低护甲并造成持续伤害：
+
+```kv
+"creature_acid_spray"
+{
+    "BaseClass"             "ability_datadriven"
+    "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+    "AbilityUnitDamageType" "DAMAGE_TYPE_PHYSICAL"
+    "AbilityTextureName"    "alchemist_acid_spray"
+    "AbilityCastPoint"      "0.2"
+    "AbilityCastRange"      "900"
+
+    "OnOwnerDied"
+    {
+        "CreateThinker"
+        {
+            "ModifierName"  "creature_acid_spray_thinker"
+            "Target"        "CASTER"
+        }
+    }
+
+    "Modifiers"
+    {
+        "creature_acid_spray_thinker"
+        {
+            "Aura"          "create_acid_spray_armor_reduction_aura"
+            "Aura_Radius"   "%radius"
+            "Aura_Teams"    "DOTA_UNIT_TARGET_TEAM_ENEMY"
+            "Aura_Types"    "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP | DOTA_UNIT_TARGET_MECHANICAL"
+            "Aura_Flags"    "DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
+            "Duration"      "%duration"
+            "OnCreated"
+            {
+                "AttachEffect"
+                {
+                    "EffectName"        "particles/units/heroes/hero_alchemist/alchemist_acid_spray.vpcf"
+                    "EffectAttachType"  "follow_origin"
+                    "Target"            "TARGET"
+                    "ControlPoints"
+                    {
+                        "00"    "0 0 0"
+                        "01"    "%radius 1 1"
+                    }
+                }
+            }
+        }
+
+        "create_acid_spray_armor_reduction_aura"
+        {
+            "IsDebuff"        "1"
+            "IsPurgable"      "0"
+            "EffectName"      "particles/units/heroes/hero_alchemist/alchemist_acid_spray_debuff.vpcf"
+            "ThinkInterval"   "%tick_rate"
+            "OnIntervalThink"
+            {
+                "Damage"
+                {
+                    "Type"    "DAMAGE_TYPE_PHYSICAL"
+                    "Damage"  "%damage"
+                    "Target"  "TARGET"
+                }
+            }
+            "Properties"
+            {
+                "MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS"    "%armor_reduction"
+            }
+        }
+    }
+
+    "AbilitySpecial"
+    {
+        "01"
+        {
+            "var_type"    "FIELD_INTEGER"
+            "radius"      "250"
+        }
+        "02"
+        {
+            "var_type"    "FIELD_FLOAT"
+            "duration"    "16.0"
+        }
+        "03"
+        {
+            "var_type"    "FIELD_INTEGER"
+            "damage"      "118 128 138 158"
+        }
+        "04"
+        {
+            "var_type"    "FIELD_INTEGER"
+            "armor_reduction"    "-3 -4 -5 -6"
+        }
+        "05"
+        {
+            "var_type"    "FIELD_FLOAT"
+            "tick_rate"   "1.0"
+        }
+    }
+}
+```
+
+### 法球攻击（AOE 眩晕）
+
+类似 Sven 的风暴之锤：
+
+```kv
+"orb_ability_example"
+{
+    "BaseClass"                 "ability_datadriven"
+    "AbilityBehavior"           "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_AUTOCAST | DOTA_ABILITY_BEHAVIOR_ATTACK"
+    "AbilityUnitTargetTeam"     "DOTA_UNIT_TARGET_TEAM_ENEMY"
+    "AbilityUnitTargetType"     "DOTA_UNIT_TARGET_ALL"
+    "AbilityCastPoint"          "0.0"
+    "AbilityCastRange"          "900"
+    "AbilityCooldown"           "0"
+    "AbilityManaCost"           "10"
+
+    "AbilitySpecial"
+    {
+        "01"
+        {
+            "var_type"      "FIELD_INTEGER"
+            "RangeDamage"   "75"
+        }
+    }
+
+    "Modifiers"
+    {
+        "TestOrb_Modifier"
+        {
+            "Passive"   "1"
+            "IsHidden"  "1"
+            "Orb"
+            {
+                "Priority"          "DOTA_ORB_PRIORITY_ABILITY"
+                "ProjectileName"    "particles/units/heroes/hero_sven/sven_spell_storm_bolt.vpcf"
+                "CastAttack"        "1"
+            }
+            "OnOrbFire"
+            {
+                "SpendMana"
+                {
+                    "Mana"  "%AbilityManaCost"
+                }
+            }
+            "OnOrbImpact"
+            {
+                "FireEffect"
+                {
+                    "EffectName"        "particles/units/heroes/hero_sven/sven_spell_warcry.vpcf"
+                    "EffectAttachType"  "attach_hitloc"
+                    "Target"            "TARGET"
+                }
+                "Damage"
+                {
+                    "Type"    "DAMAGE_TYPE_PURE"
+                    "Damage"  "%RangeDamage"
+                    "Target"
+                    {
+                        "Center"  "TARGET"
+                        "Teams"   "DOTA_UNIT_TARGET_TEAM_ENEMY"
+                        "Type"    "DOTA_UNIT_TARGET_ALL"
+                        "Radius"  "275"
+                    }
+                }
+                "Stun"
+                {
+                    "Duration"  "2"
+                    "Target"
+                    {
+                        "Center"  "TARGET"
+                        "Teams"   "DOTA_UNIT_TARGET_TEAM_ENEMY"
+                        "Type"    "DOTA_UNIT_TARGET_ALL"
+                        "Radius"  "275"
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+### 系统光环
+
+使用 `Aura` 属性的标准光环：
+
+```kv
+"TestSysAura"
+{
+    "BaseClass"             "ability_datadriven"
+    "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_AURA | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+    "AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_TEAM_ENEMY"
+    "AbilityUnitTargetType" "DOTA_UNIT_TARGET_ALL"
+    "AbilityTextureName"    "alchemist_acid_spray"
+    "MaxLevel"              "1"
+    "AbilityCastPoint"      "0.0"
+    "AbilityCastRange"      "500"
+    "AbilityCooldown"       "0"
+    "AbilityManaCost"       "0"
+
+    "AbilitySpecial"
+    {
+        "01"
+        {
+            "var_type"  "FIELD_INTEGER"
+            "Range"     "500"
+        }
+    }
+
+    "Modifiers"
+    {
+        "TestSysAura_Modifier"
+        {
+            "Passive"       "1"
+            "IsHidden"      "1"
+            "Aura"          "TestSysAura_FixAttackPercent"
+            "Aura_Radius"   "%Range"
+            "Aura_Teams"    "DOTA_UNIT_TARGET_TEAM_ENEMY"
+            "Aura_Types"    "DOTA_UNIT_TARGET_ALL"
+        }
+
+        "TestSysAura_FixAttackPercent"
+        {
+            "IsDebuff"      "1"
+            "IsPurgable"    "0"
+            "Properties"
+            {
+                "MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE"   "-50"
+            }
+        }
+    }
+}
+```
+
+### 自定义光环（Lua 可访问）
+
+通过 `ThinkInterval` + `ApplyModifier` 实现，可在 Lua 中获取光环拥有者和受影响单位：
+
+```kv
+"TestCustomAura"
+{
+    "BaseClass"             "ability_datadriven"
+    "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_AURA | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+    "AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_TEAM_ENEMY"
+    "AbilityUnitTargetType" "DOTA_UNIT_TARGET_ALL"
+    "AbilityTextureName"    "alchemist_acid_spray"
+    "MaxLevel"              "1"
+    "AbilityCastPoint"      "0.0"
+    "AbilityCastRange"      "500"
+    "AbilityCooldown"       "0"
+    "AbilityManaCost"       "0"
+
+    "AbilitySpecial"
+    {
+        "01"
+        {
+            "var_type"  "FIELD_INTEGER"
+            "Range"     "500"
+        }
+    }
+
+    "Modifiers"
+    {
+        "TestCustomAura_Modifier"
+        {
+            "Passive"       "1"
+            "IsHidden"      "1"
+            "ThinkInterval" "0.5"
+            "OnIntervalThink"
+            {
+                "ApplyModifier"
+                {
+                    "ModifierName"  "TestCustomAura_FixAttackPercentIcon"
+                    "Target"
+                    {
+                        "Teams"   "DOTA_UNIT_TARGET_TEAM_ENEMY"
+                        "Types"   "DOTA_UNIT_TARGET_ALL"
+                        "Center"  "CASTER"
+                        "Radius"  "%Range"
+                    }
+                }
+                "ApplyModifier"
+                {
+                    "ModifierName"  "TestCustomAura_FixAttackPercentTimer"
+                    "Target"
+                    {
+                        "Teams"   "DOTA_UNIT_TARGET_TEAM_ENEMY"
+                        "Types"   "DOTA_UNIT_TARGET_ALL"
+                        "Center"  "CASTER"
+                        "Radius"  "%Range"
+                    }
+                }
+            }
+        }
+
+        "TestCustomAura_FixAttackPercentIcon"
+        {
+            "IsDebuff"      "1"
+            "IsPurgable"    "0"
+            "TextureName"   "alchemist_acid_spray"
+            "Properties"
+            {
+                "MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE"   "-50"
+            }
+        }
+
+        "TestCustomAura_FixAttackPercentTimer"
+        {
+            "IsDebuff"      "1"
+            "IsPurgable"    "0"
+            "IsHidden"      "1"
+            "Duration"      "0.6"
+            "OnDestroy"
+            {
+                "RemoveModifier"
+                {
+                    "ModifierName"  "TestCustomAura_FixAttackPercentIcon"
+                    "Target"        "TARGET"
+                }
+            }
+        }
+    }
+}
+```
+
+在 Lua 中获取实体：
+- 光环拥有者：`EntIndexToHScript(keys.caster_entindex)`
+- 受影响单位：`keys.target`
+
+---
+
+来源:
+- https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/Abilities_Data_Driven
+- https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/Abilities_Data_Driven_Examples
