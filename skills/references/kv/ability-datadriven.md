@@ -12,7 +12,7 @@
 - [预缓存](#预缓存)
 - [完整示例](#完整示例)
 
-> **注意**：技能基础字段、行为标志、AbilitySpecial 等共用属性详见 `ability.md`。
+> **注意**：技能基础字段、行为标志、AbilityValues 等共用属性详见 `ability.md`。
 
 ## 基本结构
 
@@ -269,7 +269,7 @@
 }
 ```
 
-数值可使用 `%name` 语法引用 `AbilitySpecial` 中的值，随技能等级变化。
+数值可使用 `%name` 语法引用 `AbilityValues` 中的值，随技能等级变化。
 
 **常用 Properties：**
 
@@ -543,32 +543,27 @@
         }
     }
 
-    "AbilitySpecial"
+    "AbilityValues"
     {
-        "01"
+        "radius"
         {
-            "var_type"    "FIELD_INTEGER"
-            "radius"      "250"
+            "value"    "250"
         }
-        "02"
+        "duration"
         {
-            "var_type"    "FIELD_FLOAT"
-            "duration"    "16.0"
+            "value"    "16.0"
         }
-        "03"
+        "damage"
         {
-            "var_type"    "FIELD_INTEGER"
-            "damage"      "118 128 138 158"
+            "value"    "118 128 138 158"
         }
-        "04"
+        "armor_reduction"
         {
-            "var_type"    "FIELD_INTEGER"
-            "armor_reduction"    "-3 -4 -5 -6"
+            "value"    "-3 -4 -5 -6"
         }
-        "05"
+        "tick_rate"
         {
-            "var_type"    "FIELD_FLOAT"
-            "tick_rate"   "1.0"
+            "value"    "1.0"
         }
     }
 }
@@ -590,12 +585,11 @@
     "AbilityCooldown"           "0"
     "AbilityManaCost"           "10"
 
-    "AbilitySpecial"
+    "AbilityValues"
     {
-        "01"
+        "RangeDamage"
         {
-            "var_type"      "FIELD_INTEGER"
-            "RangeDamage"   "75"
+            "value"    "75"
         }
     }
 
@@ -673,12 +667,11 @@
     "AbilityCooldown"       "0"
     "AbilityManaCost"       "0"
 
-    "AbilitySpecial"
+    "AbilityValues"
     {
-        "01"
+        "Range"
         {
-            "var_type"  "FIELD_INTEGER"
-            "Range"     "500"
+            "value"    "500"
         }
     }
 
@@ -725,12 +718,11 @@
     "AbilityCooldown"       "0"
     "AbilityManaCost"       "0"
 
-    "AbilitySpecial"
+    "AbilityValues"
     {
-        "01"
+        "Range"
         {
-            "var_type"  "FIELD_INTEGER"
-            "Range"     "500"
+            "value"    "500"
         }
     }
 
