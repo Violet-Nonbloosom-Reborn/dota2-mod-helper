@@ -45,39 +45,39 @@
 
 ### 技能事件
 
-| 事件 | 触发时机 |
-|------|----------|
-| `OnSpellStart` | 技能开始施放 |
-| `OnAbilityPhaseStart` | 技能前摇开始（转向目标前） |
-| `OnAbilityStart` | 技能开始 |
-| `OnAbilityEndChannel` | 引导结束 |
-| `OnChannelFinish` | 引导完成 |
-| `OnChannelInterrupted` | 引导被打断 |
-| `OnChannelSucceeded` | 引导成功 |
-| `OnUpgrade` | 技能升级时 |
-| `OnToggleOn` / `OnToggleOff` | 开关切换 |
+| 事件                           | 触发时机          |
+| ---------------------------- | ------------- |
+| `OnSpellStart`               | 技能开始施放        |
+| `OnAbilityPhaseStart`        | 技能前摇开始（转向目标前） |
+| `OnAbilityStart`             | 技能开始          |
+| `OnAbilityEndChannel`        | 持续施法结束       |
+| `OnChannelFinish`            | 持续施法完成       |
+| `OnChannelInterrupted`       | 持续施法被打断     |
+| `OnChannelSucceeded`         | 持续施法成功       |
+| `OnUpgrade`                  | 技能升级时         |
+| `OnToggleOn` / `OnToggleOff` | 开关切换          |
 
 ### 单位事件
 
-| 事件 | 触发时机 |
-|------|----------|
-| `OnCreated` | 修饰器创建时 |
-| `OnEquip` | 装备时 |
-| `OnOwnerSpawned` | 拥有者生成时 |
-| `OnOwnerDied` | 拥有者死亡时 |
-| `OnRespawn` | 拥有者复活时 |
-| `OnAttack` | 发起攻击 |
-| `OnAttackAllied` | 攻击友方 |
-| `OnAttackFailed` | 攻击未命中 |
-| `OnHealReceived` | 受到治疗 |
-| `OnHealthGained` | 生命值变化 |
-| `OnManaGained` | 魔法值变化 |
-| `OnSpentMana` | 消耗魔法 |
-| `OnHeroKilled` | 击杀英雄 |
-| `OnOrder` | 收到命令 |
-| `OnUnitMoved` | 单位移动 |
-| `OnTeleported` / `OnTeleporting` | 传送 |
-| `OnStateChanged` | 状态变化 |
+| 事件                               | 触发时机   |
+| -------------------------------- | ------ |
+| `OnCreated`                      | 修饰器创建时 |
+| `OnEquip`                        | 装备时    |
+| `OnOwnerSpawned`                 | 拥有者生成时 |
+| `OnOwnerDied`                    | 拥有者死亡时 |
+| `OnRespawn`                      | 拥有者复活时 |
+| `OnAttack`                       | 发起攻击   |
+| `OnAttackAllied`                 | 攻击友方   |
+| `OnAttackFailed`                 | 攻击未命中  |
+| `OnHealReceived`                 | 受到治疗   |
+| `OnHealthGained`                 | 生命值变化  |
+| `OnManaGained`                   | 魔法值变化  |
+| `OnSpentMana`                    | 消耗魔法   |
+| `OnHeroKilled`                   | 击杀英雄   |
+| `OnOrder`                        | 收到命令   |
+| `OnUnitMoved`                    | 单位移动   |
+| `OnTeleported` / `OnTeleporting` | 传送     |
+| `OnStateChanged`                 | 状态变化   |
 
 ### 弹道事件
 
