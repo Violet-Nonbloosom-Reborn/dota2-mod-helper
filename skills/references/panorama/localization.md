@@ -20,7 +20,6 @@ if ($.CanLocalize("#my_custom_token")) {
 |------|------|------|
 | `$.Localize(token, [panel])` | 解析 token 为本地化字符串 | `$.Localize("#DOTA_Tooltip_ability_my_ability")` |
 | `$.CanLocalize(token)` | 检查 token 是否存在 | `$.CanLocalize("#my_token")` |
-| `$.ConstructString(token, props)` | 带属性替换的本地化 | `$.ConstructString("#my_token", { value: 100 })` |
 | `$.Language()` | 获取当前语言 | `$.Language()` → `"english"` 或 `"schinese"` |
 
 ## Label 文本设置
