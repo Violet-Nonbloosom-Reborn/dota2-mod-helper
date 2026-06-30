@@ -2,6 +2,8 @@
 
 物品是技能的派生类，共用技能的基础字段（`BaseClass`、`AbilityBehavior`、`AbilityValues` 等）。物品特有键以 `Item` 前缀为主。
 
+物品的 ID 必须以 `item_` 开头。
+
 > **注意**：物品共用字段详见 `ability.md`。
 
 ## 目录
@@ -26,7 +28,7 @@
 | `ItemQuality` | Enum | 物品品质：`component`、`consumable`、`secret_shop`、`common`、`rare`、`epic`、`artifact` |
 | `ItemDeclarations` | Flags | 购买声明：`DECLARE_PURCHASES_TO_TEAMMATES`、`DECLARE_PURCHASES_IN_SPEECH`、`DECLARE_PURCHASES_TO_SPECTATORS` |
 | `SideShop` | Boolean | 是否可在边路商店购买 |
-| `SuggestLategame` | Boolean | 是否在后期游戏推荐 |
+| `SecretShop` | Boolean | 是否可在神秘商店购买 |
 | `AbilitySharedCooldown` | String | 共享冷却组名（如 `blink`） |
 
 ### 配方系统
@@ -72,6 +74,19 @@
 | `ItemCanBeUsedWithoutInventory` | Boolean | 是否在背包内可用 |
 | `ItemRequiresCharges` | Boolean | 是否需要充能才能使用 |
 | `AssociatedConsumable` | String | 关联的消耗品 |
+| `ItemCanBeConsumed` | Boolean | 是否可被消耗 |
+| `ItemCanBeUsedWithoutInventory` | Boolean | 是否在背包内可用 |
+| `ItemRequiresCharges` | Boolean | 是否需要充能才能使用 |
+| `ItemSupport` | Boolean | 是否为辅助物品 |
+| `IsObsolete` | Boolean | 是否已废弃 |
+| `IsTempestDoubleClonable` | Boolean | 是否可被风暴双雄克隆 |
+| `SpeciallyBannedFromNeutralSlot` | Boolean | 禁止放入中立物品栏 |
+| `SpeciallyAllowedInNeutralSlot` | Boolean | 允许放入中立物品栏 |
+| `AllowedInBackpack` | Boolean | 允许放入背包 |
+| `AutoPickup` | Boolean | 自动拾取 |
+| `CooldownPausedOutOfInventory` | Boolean | 不在背包时暂停冷却 |
+| `PlayerSpecificCooldown` | Boolean | 玩家独立冷却 |
+| `BonusDelayedStockCount` | Integer | 延迟补货数量 |
 
 ### 库存系统
 
@@ -112,6 +127,27 @@
 |------|------|------|
 | `ItemIsNeutralActiveDrop` | Boolean | 是否为中立装备 |
 | `ItemIsNeutralPassiveDrop` | Boolean | 是否为中立装备附魔 |
+
+### 视觉与音效
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `Effect` | String | 粒子特效路径 |
+| `ModelAlternate` | String | 替代模型路径 |
+| `ModelScale` | Float | 模型缩放 |
+| `UIPickupSound` | String | UI 拾取音效 |
+| `UIDropSound` | String | UI 放下音效 |
+| `WorldDropSound` | String | 世界掉落音效 |
+
+### UI 提示
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `DisplayOverheadAlertOnReceived` | Boolean | 收到时显示头顶提示 |
+| `ShowDroppedItemTooltip` | Boolean | 显示掉落物品提示 |
+| `ShowGiveIndicatorOnTargetCast` | Boolean | 对目标施放时显示给予指示 |
+| `PingOverrideText` | String | Ping 覆盖文本 |
+| `ActiveDescriptionLine` | String | 主动描述行 |
 
 ### 其他
 
