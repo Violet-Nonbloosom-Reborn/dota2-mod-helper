@@ -396,7 +396,7 @@
 | **其他** | |
 | `MODIFIER_STATE_UNSELECTABLE` | 不可选中 |
 | `MODIFIER_STATE_OUT_OF_GAME` | 离开游戏 |
-| `MODIFIER_STATE_NO_UNIT_COLLISION` | 无单位碰撞 |
+| `MODIFIER_STATE_NO_UNIT_COLLISION` | 无单位碰撞（相位移动） |
 | `MODIFIER_STATE_FLYING` | 飞行 |
 | `MODIFIER_STATE_PASSIVES_DISABLED` | 被动禁用 |
 | `MODIFIER_STATE_COMMAND_RESTRICTED` | 命令受限 |
@@ -457,7 +457,7 @@
 
 ## 预缓存
 
-数据驱动技能（`BaseClass` 为 `ability_datadriven`）**不需要** `precache` 块。
+数据驱动技能可通过 `precache` 块进行预缓存。
 
 注意事项：
 - 粒子特效需要完整路径和扩展名，如 `particles/units/heroes/hero_alchemist/alchemist_acid_spray.vpcf`（不需要 `_c` 后缀）
@@ -734,7 +734,7 @@
 ```
 
 在 Lua 中获取实体：
-- 光环拥有者：`EntIndexToHScript(keys.caster_entindex)`
+- 光环拥有者：`keys.caster`
 - 受影响单位：`keys.target`
 
 ### 补充动作示例
@@ -807,22 +807,6 @@
     "Target"        "CASTER"
     "MoveToTarget"  "POINT"
 }
-```
-
-#### ReplaceUnit（替换单位）
-
-```kv
-"ReplaceUnit"
-{
-    "UnitName"  "npc_dota_new_unit"
-    "Target"    "CASTER"
-}
-```
-
-#### SpendCharge（消耗充能）
-
-```kv
-"SpendCharge" {}
 ```
 
 #### SpawnUnit 带 OnSpawn（生成单位并施加修饰器）
