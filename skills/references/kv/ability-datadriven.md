@@ -103,11 +103,11 @@
 | `FireSound` | EffectName, Target | 播放音效 |
 | `Blink` | Target | 闪烁 |
 | `Knockback` | Target, Center, Duration, Distance, Height, IsFixedDistance, ShouldStun | 击退 |
-| `SpawnUnit` | UnitName, UnitCount, UnitLimit, SpawnRadius, Duration, Target, GrantsGold, GrantsXP | 生成单位 |
-| `CreateThinker` | Target, ModifierName | 创建思考者（地面区域效果） |
+| `SpawnUnit` | UnitName, UnitCount, UnitLimit, SpawnRadius, Duration, Target, GrantsGold, GrantsXP, OnSpawn | 生成单位 |
+| `CreateThinker` | Target, ModifierName | 创建 Thinker（地面区域效果） |
 | `LinearProjectile` | Target, EffectName, MoveSpeed, StartRadius, EndRadius, FixedDistance, StartPosition, TargetTeams, TargetTypes, TargetFlags, HasFrontalCone, ProvidesVision, VisionRadius | 直线弹道 |
 | `TrackingProjectile` | Target, EffectName, Dodgeable, ProvidesVision, VisionRadius, MoveSpeed, SourceAttachment | 追踪弹道 |
-| `CleaveAttack` | CleavePercent, CleaveRadius | 溅射攻击 |
+| `CleaveAttack` | CleavePercent, CleaveRadius, CleaveEffect | 溅射攻击 |
 | `Lifesteal` | Target, LifestealPercent | 生命偷取 |
 | `AddAbility` | Target, AbilityName | 添加技能（等级 0） |
 | `RemoveAbility` | Target, AbilityName | 移除技能 |
@@ -118,6 +118,13 @@
 | `ActOnTargets` | Target, Action | 对目标执行动作 |
 | `RunScript` | Target, ScriptFile, Function | 执行 Lua 脚本 |
 | `SpendMana` | Mana | 消耗魔法 |
+| `ApplyMotionController` | Caster, Target, ScriptFile, HorizontalControlFunction, VerticalControlFunction | 通过 Lua 脚本控制单位运动轨迹 |
+| `CreateBonusAttack` | Target | 创建额外攻击 |
+| `CreateThinkerWall` | ModifierName, Width, Length, Rotation, Target | 创建墙形 Thinker |
+| `IsCasterAlive` | OnSuccess, OnFailure | 条件检查：施法者是否存活 |
+| `MoveUnit` | Target, MoveToTarget | 移动单位到目标点 |
+| `ReplaceUnit` | UnitName, Target | 替换单位 |
+| `SpendCharge` | （无参数） | 消耗物品充能 |
 
 ### 事件-动作示例
 
@@ -216,6 +223,29 @@
 - `DOTA_UNIT_TARGET_FLAG_CHECK_DISABLE_HELP`
 - `DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD`
 
+### 线形目标
+
+使用 `Line` 子键选择线形范围内的目标：
+
+```kv
+"Target"
+{
+    "Center"    "TARGET"
+    "Line"
+    {
+        "Length"    "1000"
+        "Thickness" "200"
+    }
+    "Teams"     "DOTA_UNIT_TARGET_TEAM_ENEMY"
+    "Types"     "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+}
+```
+
+| 子键 | 说明 |
+|------|------|
+| `Line.Length` | 线段长度 |
+| `Line.Thickness` | 线段宽度 |
+
 ## 修饰器
 
 修饰器是数据驱动技能的核心，定义技能的效果。
@@ -228,6 +258,7 @@
 | `IsHidden` | Boolean | 隐藏不显示 |
 | `IsBuff` / `IsDebuff` | Boolean | 增益/减益标记 |
 | `IsPurgable` | Boolean | 可被驱散 |
+| `IsStunDebuff` | Boolean | 标记为眩晕类减益 |
 | `Duration` | Float | 持续时间 |
 | `ThinkInterval` | Float | 思考间隔（秒） |
 | `Attributes` | Enum | 修饰器属性（见下） |
@@ -235,6 +266,10 @@
 | `EffectAttachType` | Enum | 特效附着方式 |
 | `TextureName` | String | 自定义图标 |
 | `OverrideAnimation` | Enum | 覆盖动画 |
+| `AllowIllusionDuplicate` | Boolean | 允许幻象复制该修饰器 |
+| `StatusEffectName` | String | 状态特效粒子路径 |
+| `StatusEffectPriority` | Integer | 状态特效优先级 |
+| `PseudoRandom` | Enum | 伪随机分布键（如 `DOTA_PSEUDO_RANDOM_JUGG_CRIT`） |
 
 **Attributes 可选值：**
 - `MODIFIER_ATTRIBUTE_NONE`
@@ -383,11 +418,12 @@
 ```kv
 "modifier_aura"
 {
-    "Aura"          "modifier_aura_effect"
-    "Aura_Radius"   "%radius"
-    "Aura_Teams"    "DOTA_UNIT_TARGET_TEAM_ENEMY"
-    "Aura_Types"    "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
-    "Aura_Flags"    "DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
+    "Aura"               "modifier_aura_effect"
+    "Aura_Radius"        "%radius"
+    "Aura_Teams"         "DOTA_UNIT_TARGET_TEAM_ENEMY"
+    "Aura_Types"         "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
+    "Aura_Flags"         "DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
+    "Aura_ApplyToCaster" "1"
 }
 
 "modifier_aura_effect"
@@ -419,6 +455,7 @@
 | `OnOrbFire` | 法球发射 |
 | `OnOrbImpact` | 法球命中 |
 | `OnAbilityExecuted` | 技能执行 |
+| `OnUnequip` | 物品卸下时 |
 | `Orb` | 法球配置块 |
 
 ### 法球 (Orb)
@@ -793,6 +830,128 @@
 在 Lua 中获取实体：
 - 光环拥有者：`EntIndexToHScript(keys.caster_entindex)`
 - 受影响单位：`keys.target`
+
+### 补充动作示例
+
+#### ApplyMotionController（运动控制）
+
+```kv
+"ApplyMotionController"
+{
+    "Caster"                  "CASTER"
+    "Target"                  "TARGET"
+    "ScriptFile"              "heroes/hero_name/ability_name.lua"
+    "HorizontalControlFunction" "MotionControllerHorizontal"
+    "VerticalControlFunction"   "MotionControllerVertical"
+}
+```
+
+#### CreateBonusAttack（额外攻击）
+
+```kv
+"CreateBonusAttack"
+{
+    "Target"    "TARGET"
+}
+```
+
+#### CreateThinkerWall（墙形 Thinker）
+
+```kv
+"CreateThinkerWall"
+{
+    "ModifierName"  "modifier_wall"
+    "Width"         "%width"
+    "Length"        "%length"
+    "Rotation"      "0 0 0"
+    "Target"        "CASTER"
+}
+```
+
+#### IsCasterAlive（条件检查）
+
+```kv
+"IsCasterAlive"
+{
+    "OnSuccess"
+    {
+        "Damage"
+        {
+            "Target"    "TARGET"
+            "Type"      "DAMAGE_TYPE_MAGICAL"
+            "Damage"    "%damage"
+        }
+    }
+    "OnFailure"
+    {
+        "FireSound"
+        {
+            "EffectName"    "Ability.Failed"
+            "Target"        "CASTER"
+        }
+    }
+}
+```
+
+#### MoveUnit（移动单位）
+
+```kv
+"MoveUnit"
+{
+    "Target"        "CASTER"
+    "MoveToTarget"  "POINT"
+}
+```
+
+#### ReplaceUnit（替换单位）
+
+```kv
+"ReplaceUnit"
+{
+    "UnitName"  "npc_dota_new_unit"
+    "Target"    "CASTER"
+}
+```
+
+#### SpendCharge（消耗充能）
+
+```kv
+"SpendCharge" {}
+```
+
+#### SpawnUnit 带 OnSpawn（生成单位并施加修饰器）
+
+```kv
+"SpawnUnit"
+{
+    "UnitName"      "npc_dota_summon"
+    "Target"        "CASTER"
+    "Duration"      "%duration"
+    "UnitCount"     "2"
+    "GrantsGold"    "0"
+    "GrantsXP"      "0"
+    "SpawnRadius"   "100"
+    "OnSpawn"
+    {
+        "ApplyModifier"
+        {
+            "ModifierName"  "modifier_summon_buff"
+            "Target"        "TARGET"
+        }
+    }
+}
+```
+
+#### CleaveAttack 带 CleaveEffect（溅射攻击带特效）
+
+```kv
+"CleaveAttack"
+{
+    "CleavePercent" "%cleave_damage_pct"
+    "CleaveRadius"  "%cleave_radius"
+    "CleaveEffect"  "particles/units/heroes/hero_sven/sven_spell_great_cleave.vpcf"
+}
+```
 
 ---
 
