@@ -108,7 +108,7 @@
 | `LinearProjectile` | Target, EffectName, MoveSpeed, StartRadius, EndRadius, FixedDistance, StartPosition, TargetTeams, TargetTypes, TargetFlags, HasFrontalCone, ProvidesVision, VisionRadius | 直线弹道 |
 | `TrackingProjectile` | Target, EffectName, Dodgeable, ProvidesVision, VisionRadius, MoveSpeed, SourceAttachment | 追踪弹道 |
 | `CleaveAttack` | CleavePercent, CleaveRadius, CleaveEffect | 溅射攻击 |
-| `Lifesteal` | Target, LifestealPercent | 生命偷取 |
+| `Lifesteal` | Target, LifestealPercent | 吸血 |
 | `AddAbility` | Target, AbilityName | 添加技能（等级 0） |
 | `RemoveAbility` | Target, AbilityName | 移除技能 |
 | `LevelUpAbility` | Target, AbilityName | 技能升级 |
