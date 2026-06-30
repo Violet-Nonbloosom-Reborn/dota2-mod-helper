@@ -114,7 +114,8 @@
 | `LevelUpAbility` | Target, AbilityName | 技能升级 |
 | `DestroyTrees` | Target, Radius | 摧毁树木 |
 | `DelayedAction` | Delay, Action | 延迟执行动作 |
-| `Random` | Chance, PseudoRandom, OnSuccess, OnFailure | 概率触发 |
+| `Random` | Chance, PseudoRandom（可选）, OnSuccess, OnFailure | 概率触发指定事件 |
+| `PseudoRandom` | Enum | 伪随机分布键（如 `DOTA_PSEUDO_RANDOM_JUGG_CRIT`） |
 | `ActOnTargets` | Target, Action | 对目标执行动作 |
 | `RunScript` | Target, ScriptFile, Function | 执行 Lua 脚本 |
 | `SpendMana` | Mana | 消耗魔法 |
@@ -160,26 +161,14 @@
 ```kv
 "Target"
 {
-    "Center"        "CASTER"
-    "Radius"        "300"
-    "Teams"         "DOTA_UNIT_TARGET_TEAM_ENEMY"
-    "Types"         "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
-    "Flags"         "DOTA_UNIT_TARGET_FLAG_NOT_MAGIC_IMMUNE_ALLIES"
-    "MaxTargets"    "3"
-    "Random"        "1"
+    "Center"        "CASTER" // 范围中心：CASTER, TARGET, POINT, PROJECTILE, UNIT, ATTACKER
+    "Radius"        "300"  // 搜索半径
+    "Teams"         "DOTA_UNIT_TARGET_TEAM_ENEMY" // 队伍筛选
+    "Types"         "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP" // 类型筛选
+    "Flags"         "DOTA_UNIT_TARGET_FLAG_NOT_MAGIC_IMMUNE_ALLIES" // 标签筛选
+    "MaxTargets"    "3" // 最大目标数
 }
 ```
-
-| 子键 | 说明 |
-|------|------|
-| `Center` | 范围中心：CASTER, TARGET, POINT, PROJECTILE, UNIT, ATTACKER |
-| `Radius` | 搜索半径（单位） |
-| `Teams` | 队伍筛选 |
-| `Types` / `ExcludeTypes` | 类型筛选 |
-| `Flags` / `ExcludeFlags` | 标志筛选 |
-| `MaxTargets` | 最大目标数 |
-| `Random` | 超出 MaxTargets 时是否随机选择（0 表示必须恰好 MaxTargets 个目标） |
-| `ScriptSelectPoints` | 脚本选择点：ScriptFile, Function, Radius, Count |
 
 **Teams 可选值：**
 - `DOTA_UNIT_TARGET_TEAM_ENEMY`
@@ -233,18 +222,13 @@
     "Center"    "TARGET"
     "Line"
     {
-        "Length"    "1000"
-        "Thickness" "200"
+        "Length"    "1000" // 线段长度
+        "Thickness" "200" // 线段宽度
     }
     "Teams"     "DOTA_UNIT_TARGET_TEAM_ENEMY"
     "Types"     "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
 }
 ```
-
-| 子键 | 说明 |
-|------|------|
-| `Line.Length` | 线段长度 |
-| `Line.Thickness` | 线段宽度 |
 
 ## 修饰器
 
@@ -259,8 +243,9 @@
 | `IsBuff` / `IsDebuff` | Boolean | 增益/减益标记 |
 | `IsPurgable` | Boolean | 可被驱散 |
 | `IsStunDebuff` | Boolean | 标记为眩晕类减益 |
+| `IsHexDebuff` | Boolean | 标记为变形类减益 |
 | `Duration` | Float | 持续时间 |
-| `ThinkInterval` | Float | 思考间隔（秒） |
+| `ThinkInterval` | Float | OnThink 触发间隔（秒） |
 | `Attributes` | Enum | 修饰器属性（见下） |
 | `EffectName` | String | 粒子特效路径 |
 | `EffectAttachType` | Enum | 特效附着方式 |
@@ -269,7 +254,6 @@
 | `AllowIllusionDuplicate` | Boolean | 允许幻象复制该修饰器 |
 | `StatusEffectName` | String | 状态特效粒子路径 |
 | `StatusEffectPriority` | Integer | 状态特效优先级 |
-| `PseudoRandom` | Enum | 伪随机分布键（如 `DOTA_PSEUDO_RANDOM_JUGG_CRIT`） |
 
 **Attributes 可选值：**
 - `MODIFIER_ATTRIBUTE_NONE`
@@ -317,7 +301,7 @@
 | `MODIFIER_PROPERTY_MOVESPEED_BASE_OVERRIDE` | 覆盖基础移动速度 |
 | **攻击** | |
 | `MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT` | 攻击速度加成 |
-| `MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT` | 基础攻击间隔 |
+| `MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT` | 基础攻击间隔设定 |
 | `MODIFIER_PROPERTY_BASEATTACK_BONUSDAMAGE` | 基础攻击力加成 |
 | `MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE` | 攻击前伤害加成 |
 | `MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE` | 暴击倍率 |
@@ -350,17 +334,14 @@
 | `MODIFIER_PROPERTY_STATS_AGILITY_BONUS` | 敏捷加成 |
 | `MODIFIER_PROPERTY_STATS_INTELLECT_BONUS` | 智力加成 |
 | **特殊** | |
-| `MODIFIER_PROPERTY_IS_ILLUSION` | 标记为幻象 |
-| `MODIFIER_PROPERTY_IS_SCEPTER` | 标记为装备神杖 |
-| `MODIFIER_PROPERTY_DISABLE_AUTOATTACK` | 禁用自动攻击 |
 | `MODIFIER_PROPERTY_DISABLE_HEALING` | 禁用治疗 |
-| `MODIFIER_PROPERTY_INVISIBILITY_LEVEL` | 隐身等级 |
-| `MODIFIER_PROPERTY_PERSISTENT_INVISIBILITY` | 永久隐身 |
 | `MODIFIER_PROPERTY_MODEL_CHANGE` | 模型改变 |
 
 ### 修饰器状态 (States)
 
 状态是三值类型：`MODIFIER_STATE_VALUE_NO_ACTION`、`MODIFIER_STATE_VALUE_ENABLED`、`MODIFIER_STATE_VALUE_DISABLED`。
+
+`MODIFIER_STATE_VALUE_ENABLED` 可以简化为 1 。
 
 ```kv
 "States"
@@ -796,16 +777,6 @@
             "Target"        "CASTER"
         }
     }
-}
-```
-
-#### MoveUnit（移动单位）
-
-```kv
-"MoveUnit"
-{
-    "Target"        "CASTER"
-    "MoveToTarget"  "POINT"
 }
 ```
 
