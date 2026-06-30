@@ -36,6 +36,18 @@ Dota 2 自定义游戏采用前后端分离架构：
 - 核心文件说明（addoninfo.txt、addon_game_mode.lua）
 - KV 数据定义与 Lua 脚本的关系
 
+## 跨端功能
+
+### 网络表
+
+**何时阅读**：需要在服务器和客户端之间同步持久化数据时。
+
+参阅 `references/nettables.md`：
+- 表注册（custom_net_tables.txt）
+- 服务器端写入（Lua）
+- 客户端读取和订阅（JavaScript）
+- 网络表 vs 自定义事件
+
 ## 领域参考文档
 
 根据任务加载对应的参考文档：
