@@ -814,6 +814,34 @@
 }
 ```
 
+#### Random（概率触发）
+
+```kv
+"Random"
+{
+    "Chance"        "%crit_chance"
+    "PseudoRandom"  "DOTA_PSEUDO_RANDOM_JUGG_CRIT"
+    "OnSuccess"
+    {
+        "Damage"
+        {
+            "Target"    "TARGET"
+            "Type"      "DAMAGE_TYPE_PHYSICAL"
+            "Damage"    "%crit_damage"
+        }
+    }
+    "OnFailure"
+    {
+        "Damage"
+        {
+            "Target"    "TARGET"
+            "Type"      "DAMAGE_TYPE_PHYSICAL"
+            "Damage"    "%normal_damage"
+        }
+    }
+}
+```
+
 ---
 
 来源:
