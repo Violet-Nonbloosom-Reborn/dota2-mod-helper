@@ -452,22 +452,8 @@
 | `OnTakeDamage` | 拥有者受到伤害（`%attack_damage` 为减免后伤害） |
 | `OnKill` | 击杀时 |
 | `OnDeath` | 死亡时 |
-| `OnOrbFire` | 法球发射 |
-| `OnOrbImpact` | 法球命中 |
 | `OnAbilityExecuted` | 技能执行 |
 | `OnUnequip` | 物品卸下时 |
-| `Orb` | 法球配置块 |
-
-### 法球 (Orb)
-
-```kv
-"Orb"
-{
-    "Priority"          "DOTA_ORB_PRIORITY_ABILITY"
-    "ProjectileName"    "particles/units/heroes/hero_sven/sven_spell_storm_bolt.vpcf"
-    "CastAttack"        "1"
-}
-```
 
 ## 预缓存
 
@@ -601,86 +587,6 @@
         "tick_rate"
         {
             "value"    "1.0"
-        }
-    }
-}
-```
-
-### 法球攻击（AOE 眩晕）
-
-类似 Sven 的风暴之锤：
-
-```kv
-"orb_ability_example"
-{
-    "BaseClass"                 "ability_datadriven"
-    "AbilityBehavior"           "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_AUTOCAST | DOTA_ABILITY_BEHAVIOR_ATTACK"
-    "AbilityUnitTargetTeam"     "DOTA_UNIT_TARGET_TEAM_ENEMY"
-    "AbilityUnitTargetType"     "DOTA_UNIT_TARGET_ALL"
-    "AbilityCastPoint"          "0.0"
-    "AbilityCastRange"          "900"
-    "AbilityCooldown"           "0"
-    "AbilityManaCost"           "10"
-
-    "AbilityValues"
-    {
-        "RangeDamage"
-        {
-            "value"    "75"
-        }
-    }
-
-    "Modifiers"
-    {
-        "TestOrb_Modifier"
-        {
-            "Passive"   "1"
-            "IsHidden"  "1"
-            "Orb"
-            {
-                "Priority"          "DOTA_ORB_PRIORITY_ABILITY"
-                "ProjectileName"    "particles/units/heroes/hero_sven/sven_spell_storm_bolt.vpcf"
-                "CastAttack"        "1"
-            }
-            "OnOrbFire"
-            {
-                "SpendMana"
-                {
-                    "Mana"  "%AbilityManaCost"
-                }
-            }
-            "OnOrbImpact"
-            {
-                "FireEffect"
-                {
-                    "EffectName"        "particles/units/heroes/hero_sven/sven_spell_warcry.vpcf"
-                    "EffectAttachType"  "attach_hitloc"
-                    "Target"            "TARGET"
-                }
-                "Damage"
-                {
-                    "Type"    "DAMAGE_TYPE_PURE"
-                    "Damage"  "%RangeDamage"
-                    "Target"
-                    {
-                        "Center"  "TARGET"
-                        "Teams"   "DOTA_UNIT_TARGET_TEAM_ENEMY"
-                        "Type"    "DOTA_UNIT_TARGET_ALL"
-                        "Radius"  "275"
-                    }
-                }
-                "Stun"
-                {
-                    "Duration"  "2"
-                    "Target"
-                    {
-                        "Center"  "TARGET"
-                        "Teams"   "DOTA_UNIT_TARGET_TEAM_ENEMY"
-                        "Type"    "DOTA_UNIT_TARGET_ALL"
-                        "Radius"  "275"
-                    }
-                }
-            }
         }
     }
 }
