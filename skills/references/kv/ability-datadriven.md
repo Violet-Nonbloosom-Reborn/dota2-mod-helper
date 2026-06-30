@@ -232,7 +232,7 @@
 
 ## 修饰器
 
-修饰器是数据驱动技能的核心，定义技能的效果。
+修饰器是数据驱动技能的核心，可用于实现 Buff 加成，或承接部分效果。
 
 ### 修饰器属性
 
@@ -357,13 +357,12 @@
 | **控制** | |
 | `MODIFIER_STATE_STUNNED` | 眩晕 |
 | `MODIFIER_STATE_SILENCED` | 沉默 |
-| `MODIFIER_STATE_MUTED` | 默写（无法使用物品） |
-| `MODIFIER_STATE_ROOTED` | 束缚 |
+| `MODIFIER_STATE_MUTED` | 锁闭（无法使用物品） |
+| `MODIFIER_STATE_ROOTED` | 缠绕 |
 | `MODIFIER_STATE_DISARMED` | 缴械 |
 | `MODIFIER_STATE_HEXED` | 妖术 |
-| `MODIFIER_STATE_FROZEN` | 冰冻 |
 | `MODIFIER_STATE_NIGHTMARED` | 噩梦 |
-| `MODIFIER_STATE_DOMINATED` | 被控制 |
+| `MODIFIER_STATE_DOMINATED` | 被支配 |
 | **免疫** | |
 | `MODIFIER_STATE_INVULNERABLE` | 无敌 |
 | `MODIFIER_STATE_MAGIC_IMMUNE` | 魔免 |
@@ -425,7 +424,7 @@
 |------|------|
 | `OnCreated` | 修饰器创建时 |
 | `OnDestroy` | 修饰器移除时 |
-| `OnIntervalThink` | 思考间隔触发（需设置 ThinkInterval） |
+| `OnIntervalThink` | Think 间隔触发（需设置 ThinkInterval） |
 | `OnAttacked` | 拥有者被攻击 |
 | `OnAttackLanded` | 拥有者攻击命中（`%attack_damage` 为减免前伤害） |
 | `OnAttackStart` | 拥有者开始攻击（动画开始时） |
@@ -442,7 +441,7 @@
 
 注意事项：
 - 粒子特效需要完整路径和扩展名，如 `particles/units/heroes/hero_alchemist/alchemist_acid_spray.vpcf`（不需要 `_c` 后缀）
-- 音效只需事件名称
+- 音效文件需要完整路径和扩展名，但使用时只需音效事件名称。
 
 ## 完整示例
 
