@@ -2,6 +2,10 @@
 
 Dota 2 自定义游戏支持两种技能实现方式：数据驱动型和 Lua 型。两种方式都使用 KV 文件定义技能属性。
 
+技能的 KV 文件定义应放在 `npc_abilities_custom.txt` 中。
+
+虽然按照规范，覆写原生技能和物品的 KV 定义应该放在 `npc_abilities_override.txt` 中，但放在 `npc_abilities_custom.txt` 中的覆写也会生效。
+
 ## 目录
 
 - [技能类型对比](#技能类型对比)
