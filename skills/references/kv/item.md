@@ -29,7 +29,6 @@
 | `ItemDeclarations` | Flags | 购买声明：`DECLARE_PURCHASES_TO_TEAMMATES`、`DECLARE_PURCHASES_IN_SPEECH`、`DECLARE_PURCHASES_TO_SPECTATORS` |
 | `SideShop` | Boolean | 是否可在边路商店购买 |
 | `SecretShop` | Boolean | 是否可在神秘商店购买 |
-| `AbilitySharedCooldown` | String | 共享冷却组名（如 `blink`） |
 
 ### 配方系统
 
