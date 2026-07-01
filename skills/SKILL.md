@@ -77,14 +77,12 @@ Dota 2 自定义游戏采用前后端分离架构：
 - 游戏模式与技能 Lua 模式（待补充）
 
 ### Panorama（UI）
-**何时阅读**：构建自定义 HUD、仪表盘、技能提示框、自定义 UI 面板时。
+**何时阅读**：编写或修改 Panorama UI 文件（XML/CSS/JS）时。
 
 参阅 `references/panorama/`：
-- `localization.md` — Panorama JS 中使用本地化文本
-- XML 布局结构（待补充）
-- JavaScript API 与事件处理（待补充）
-- Panorama CSS 特性（与 Web CSS 有差异）（待补充）
-- 面板通信模式（待补充）
+- `overview.md` — 文件结构、核心约束、调试命令
+- `game-objects.md` — 通过索引访问游戏对象（标识方式、只读查询、写操作指令）
+- `localization.md` — 本地化文本（token 语法、对话框变量）
 
 ## API 参考
 
