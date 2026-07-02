@@ -150,6 +150,38 @@ LinkLuaModifier("modifier_my_buff", "heroes/hero_name/my_ability", LUA_MODIFIER_
 | `IsPurgable()`    | 是否可驱散  | 布尔值 |
 | `GetEffectName()` | 粒子特效名称 | 字符串 |
 
+### 继承限制
+
+通过 `class({}, nil, BaseClass)` 继承的方法，只有不涉及 C++ 内核的部分才能生效。引擎对技能和修饰器的回调函数使用直接查表而非元表链查找，继承的方法在纯 Lua 中可调用，但引擎不会识别。
+
+**受影响**：修饰器（`modifier_*`）、技能（`ability_*`）、物品（`item_*`）的所有引擎回调函数。
+
+**不受影响**：纯 Lua 逻辑（自定义方法、辅助函数等不直接被引擎调用的部分）。
+
+**解决方案**：使用 `Merge()` 或 `vlua.tableadd()` 组合。
+
+**区别**：
+- `Merge(t1, t2)`：以第一个表的内容优先
+- `vlua.tableadd(t1, t2)`：以第二个表的内容优先
+
+```lua
+-- 定义可复用方法
+HiddenDebuff = {
+    IsHidden = function() return true end,
+    IsDebuff = function() return true end,
+}
+
+-- 方式一：Merge()（第一个表优先）
+modifier_my_debuff = class(Merge({
+    GetEffectName = function() return "particles/..." end,
+}, HiddenDebuff))
+
+-- 方式二：vlua.tableadd()（第二个表优先）
+modifier_my_debuff = class(vlua.tableadd(HiddenDebuff, {
+    GetEffectName = function() return "particles/..." end,
+}))
+```
+
 ### DeclareFunctions
 
 声明修饰器影响的属性和事件：
