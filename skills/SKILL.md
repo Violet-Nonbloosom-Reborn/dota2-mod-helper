@@ -84,6 +84,7 @@ Dota 2 自定义游戏采用前后端分离架构：
 - `custom-ui-manifest.md` — UI 入口文件（CustomUIElement 类型、禁用默认 UI）
 - `panels.md` — Panel 类型参考（通用 Panel、DOTA 专用 Panel、Image 缩放、Label HTML）
 - `javascript.md` — JavaScript 基础（脚本引入、$ 对象、事件、重载行为）
+- `events.md` — 事件系统（事件路由、Panel 事件、默认事件属性、常用内置事件）
 - `game-objects.md` — 通过索引访问游戏对象（标识方式、只读查询、写操作指令）
 - `localization.md` — 本地化文本（token 语法、对话框变量）
 - `mouse-callback.md` — GameUI.SetMouseCallback 模式（鼠标回调、事件处理）
