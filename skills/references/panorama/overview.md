@@ -31,7 +31,7 @@ content/dota_addons/ADDON_NAME/panorama/
 
 ### Panel
 
-Panel 是 UI 的基本单元。所有可见元素（标签、图像、按钮）都是 Panel。
+Panel 是 UI 的基本单元。所有可见元素（标签、图像、按钮）都是 Panel。详见 `panels.md`。
 
 ### XML 布局
 
