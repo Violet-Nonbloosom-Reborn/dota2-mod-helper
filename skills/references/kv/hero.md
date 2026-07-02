@@ -214,6 +214,28 @@ Dota 2 自定义游戏中的英雄覆写通过 `npc_heroes_custom.txt` 文件定
 }
 ```
 
+## 英雄选择列表
+
+`herolist.txt` 控制英雄选择界面中可用的英雄。
+
+**路径**：`scripts/npc/herolist.txt`
+
+### 格式
+
+```kv
+"CustomHeroList"
+{
+    "npc_dota_hero_axe"       "1"    // 启用
+    "npc_dota_hero_pudge"     "1"    // 启用
+    "npc_dota_hero_batrider"  "0"    // 禁用
+}
+```
+### 注意事项
+
+- 英雄名称必须使用完整格式：`npc_dota_hero_<name>`
+- 未列出的英雄默认禁用
+- 此文件也会影响 Lua 中通过 `CreateUnitByName` 创建英雄
+
 ## 相关文件
 
 | 文件 | 内容 |

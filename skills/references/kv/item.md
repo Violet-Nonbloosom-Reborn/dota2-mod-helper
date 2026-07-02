@@ -2,9 +2,13 @@
 
 物品是技能的派生类，共用技能的基础字段（`BaseClass`、`AbilityBehavior`、`AbilityValues` 等）。物品特有键以 `Item` 前缀为主。
 
+物品和技能不能直接混用。
+
 物品的 ID 必须以 `item_` 开头。
 
 > **注意**：物品共用字段详见 `ability.md`。
+
+自定义物品也分为数据驱动型和 lua 型，两者的基类分别为 `item_datadriven` 和 `item_lua`。
 
 ## 目录
 
