@@ -20,6 +20,8 @@ content/dota_addons/ADDON_NAME/panorama/
     └── *.js                      # 脚本文件
 ```
 
+**注意**：部分项目会将 CSS 和 JS 文件与 XML 放在同一目录（`layout/custom_game/`），而非按上述标准结构分开。查找文件时应检查实际项目结构。
+
 ### 入口文件
 
 - **Custom UI Manifest**：`custom_ui_manifest.xml` 是 UI 入口，所有自定义 UI 从这里加载
@@ -44,7 +46,7 @@ XML 描述 UI 结构和 Panel 层级。
 CSS 定义 Panel 的呈现方式。
 
 **约束**：
-- 部分 CSS 属性与 Web CSS 不同，使用 `dump_panorama_css_properties` 命令查看完整列表
+- 部分 CSS 属性与 Web CSS 不同，完整列表参见 `dota2-script-ref` skill 的 `panorama/css.json`
 - 无需考虑浏览器兼容性
 
 ### JavaScript
@@ -77,21 +79,6 @@ Panel 间通信机制，有特定的路由规则。
 
 - 修改文件后自动重载
 - 异常时使用 `dota_launch_custom_game ADDON_NAME MAP_NAME` 重新加载
-
-## 调试
-
-### 控制台命令
-
-| 命令 | 用途 |
-|------|------|
-| `dump_panorama_css_properties` | 输出所有支持的 CSS 属性 |
-| `dota_custom_ui_debug_panel <type>` | 强制显示指定类型的 UI 元素 |
-
-### 调试技巧
-
-- 内联样式：`<Panel style="border: 1px solid red;" />`（注意分号）
-- 输出日志：`$.Msg("message", data)`
-
 ## 服务端 API
 
 ### DynamicHud（服务端创建 UI）
@@ -107,7 +94,7 @@ Panel 间通信机制，有特定的路由规则。
 
 ### GameUI.SetMouseCallback
 
-注册鼠标回调，在主游戏代码处理鼠标之前执行。
+详见 `mouse-callback.md`。
 
 ## 常见错误
 
