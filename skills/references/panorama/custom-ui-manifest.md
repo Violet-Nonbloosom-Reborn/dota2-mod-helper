@@ -21,7 +21,6 @@ UI 入口文件，声明需要加载的自定义 UI 元素和脚本。
 ## 约束
 
 - `<root>` 内只能有一个无 ID 的 `<Panel>`
-- **禁止**在 manifest 中直接使用 `<script>` 标签；逻辑必须写在独立 JS 文件中，通过 `<scripts>` 和 `<include>` 引入
 - 同一 `type` 可注册多个 `<CustomUIElement>`，按声明顺序层叠
 - 加载界面（`custom_loading_screen.xml`）不走 manifest，独立加载
 

@@ -40,6 +40,7 @@ XML 描述 UI 结构和 Panel 层级。
 **约束**：
 - `<root>` 元素内只能有一个无 ID 的 Panel
 - 违反此约束会导致编译错误："Found duplicate panel description"
+- **已废弃**：`<script>` 标签直接包含脚本的方式已废弃。逻辑必须写在独立 JS 文件中，通过 `<scripts>` 和 `<include>` 引入
 
 ### CSS 样式
 
