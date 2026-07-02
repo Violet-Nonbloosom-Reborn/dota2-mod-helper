@@ -1,5 +1,6 @@
 ---
 name: dota2mod-helper
+version: 1.0
 description: Dota 2 自定义游戏开发辅助。适用于使用 Dota 2 Workshop Tools 开发自定义技能（DataDriven KV）、Lua 脚本（vscripts）、Panorama UI（XML、JavaScript、CSS），以及单位、物品、修饰器 KeyValue 文件。包含代码模式、约定和自定义游戏开发工作流指引。
 ---
 
