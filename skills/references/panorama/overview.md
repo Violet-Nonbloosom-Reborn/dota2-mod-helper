@@ -24,7 +24,7 @@ content/dota_addons/ADDON_NAME/panorama/
 
 ### 入口文件
 
-- **Custom UI Manifest**：`custom_ui_manifest.xml` 是 UI 入口，所有自定义 UI 从这里加载
+- **Custom UI Manifest**：`custom_ui_manifest.xml` 是 UI 入口，所有自定义 UI 从这里加载。详见 `custom-ui-manifest.md`
 - **加载界面**：`custom_loading_screen.xml` 独立加载，时机早于 manifest
 
 ## 核心概念
