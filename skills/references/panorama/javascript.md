@@ -67,6 +67,35 @@ newChild.BLoadLayout("file://{resources}/layout/custom_game/new_panel.xml", fals
 | `background-color` | `style.backgroundColor` |
 | `font-size` | `style.fontSize` |
 
+## 常用 Panel 方法
+
+| 方法 | 说明 |
+|------|------|
+| `panel.FindChildInLayoutFile(id)` | 按 ID 查找子面板 |
+| `panel.SetHasClass(class, bool)` | 添加/移除 CSS 类 |
+| `panel.SwitchClass(slot, class)` | 切换属性槽位的类 |
+| `panel.GetAttributeInt(name, default)` | 读取整数属性 |
+| `$.Schedule(delay, callback)` | 延迟执行回调 |
+| `GameUI.CustomUIConfig()` | 获取全局 UI 配置对象 |
+
+```javascript
+// 查找子面板
+var child = panel.FindChildInLayoutFile("ChildID");
+
+// 切换 CSS 类
+$("#Panel").SetHasClass("Visible", true);
+$("#Panel").SwitchClass("Difficulty", "Difficulty3");
+
+// 读取自定义属性
+var entIndex = $("#Container").GetAttributeInt("ent_index", -1);
+
+// 延迟执行（5 秒后隐藏面板）
+$.Schedule(5.0, function() { $("#Panel").SetHasClass("Visible", false); });
+
+// 全局配置（在 manifest 中设置，各面板共享）
+GameUI.CustomUIConfig().team_colors = {};
+```
+
 ## 重载行为
 
 面板重载时，关联的 JS 会重新执行。注意事项：

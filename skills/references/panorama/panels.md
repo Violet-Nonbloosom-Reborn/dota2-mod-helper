@@ -20,13 +20,15 @@
 
 ## DOTA 专用 Panel
 
-| Panel | 用途 | 关键属性 |
-|-------|------|----------|
-| `DOTAHeroImage` | 英雄图片 | `heroid` 或 `heroname`, `heroimagestyle` |
-| `DOTAAvatarImage` | Steam 头像 | `steamid`（`"local"` 表示本地玩家，或 64 位 SteamID） |
-| `DOTAItemImage` | 物品图片 | `itemname` |
-| `DOTAAbilityImage` | 技能图片 | `abilityname` |
-| `DOTAUserName` | Steam 用户名 | `steamid` |
+| Panel              | 用途                  | 关键属性                                       |
+| ------------------ | ------------------- | ------------------------------------------ |
+| `DOTAHeroImage`    | 英雄图片                | `heroid` 或 `heroname`, `heroimagestyle`    |
+| `DOTAAvatarImage`  | Steam 头像            | `steamid`（`"local"` 表示本地玩家，或 64 位 SteamID） |
+| `DOTAItemImage`    | 物品图片                | `itemname`                                 |
+| `DOTAAbilityImage` | 技能图片                | `abilityname`                              |
+| `DOTAUserName`     | Steam 用户名           | `steamid`                                  |
+| `DOTAScenePanel`   | 3D 场景面板，渲染英雄模型或粒子特效 | `unit`, `camera`, `map`, `particleonly`    |
+| `ProgressBar`      | 进度条                 | `min`, `max`, `value`                      |
 
 ## Image 缩放模式
 
@@ -74,4 +76,49 @@
 
 ```xml
 <Label html="true" text="Click &lt;a href=&quot;http://www.example.com&quot;&gt;here&lt;/a&gt;" />
+```
+
+## DOTAScenePanel
+
+渲染 3D 英雄模型或粒子特效的面板。
+
+```xml
+<!-- 渲染英雄模型 -->
+<DOTAScenePanel id="HeroModel" unit="npc_dota_hero_axe" camera="default_camera" />
+
+<!-- 渲染粒子特效 -->
+<DOTAScenePanel id="ParticleFX" map="particles/my_effect" camera="shot_camera" particleonly="true" />
+```
+
+| 属性 | 说明 |
+|------|------|
+| `unit` | 英雄单位名（如 `npc_dota_hero_axe`） |
+| `map` | 粒子资源路径 |
+| `camera` | 摄像机名称 |
+| `particleonly` | 设为 `true` 时仅渲染粒子 |
+
+可通过 JS 动态设置英雄：
+
+```javascript
+$("#HeroModel").SetUnit("npc_dota_hero_pudge", "default_camera");
+```
+
+## ProgressBar
+
+进度条控件，常用于血条、蓝条、经验条。
+
+```xml
+<ProgressBar id="HealthBar" min="0" max="100" value="75" />
+```
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `min` | Integer | 最小值 |
+| `max` | Integer | 最大值 |
+| `value` | Integer | 当前值 |
+
+可通过 JS 动态更新：
+
+```javascript
+$("#HealthBar").value = 50;
 ```
