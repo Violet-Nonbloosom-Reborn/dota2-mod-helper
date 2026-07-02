@@ -77,9 +77,6 @@
 | `ItemCanBeUsedWithoutInventory` | Boolean | 是否在背包内可用 |
 | `ItemRequiresCharges` | Boolean | 是否需要充能才能使用 |
 | `AssociatedConsumable` | String | 关联的消耗品 |
-| `ItemCanBeConsumed` | Boolean | 是否可被消耗 |
-| `ItemCanBeUsedWithoutInventory` | Boolean | 是否在背包内可用 |
-| `ItemRequiresCharges` | Boolean | 是否需要充能才能使用 |
 | `ItemSupport` | Boolean | 是否为辅助物品 |
 | `IsObsolete` | Boolean | 是否已废弃 |
 | `IsTempestDoubleClonable` | Boolean | 是否可被风暴双雄克隆 |
