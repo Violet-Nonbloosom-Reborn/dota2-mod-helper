@@ -16,7 +16,7 @@
 
 ## 内置游戏事件
 
-### ListenToGameEvent
+### 事件监听：ListenToGameEvent
 
 ```lua
 ListenToGameEvent(eventName, functionToCall, context)
