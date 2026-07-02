@@ -131,6 +131,8 @@ my_ability = class({})
 LinkLuaModifier("modifier_my_buff", "heroes/hero_name/my_ability", LUA_MODIFIER_MOTION_NONE)
 ```
 
+不依赖技能的修饰器（如全局修饰器、系统修饰器）需在 `addon_game_mode.lua` 中集中调用 `LinkLuaModifier()`。
+
 ### 运动控制器类型
 
 | 类型 | 说明 |
