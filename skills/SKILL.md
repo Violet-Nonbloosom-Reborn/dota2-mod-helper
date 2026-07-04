@@ -73,6 +73,7 @@ Dota 2 自定义游戏采用前后端分离架构：
 
 参阅 `references/lua/`：
 - `ability-lua.md` — Lua 技能与修饰器（事件、属性、状态、Thinker、lua 继承限制）
+- `native-modifiers.md` — 原生修饰器应用技巧（modifier_kill、属性书标记修饰器）
 - `events.md` — 游戏事件系统（内置事件监听、自定义事件通信）
 - `filters.md` — 脚本过滤器（伤害、金币、经验、修饰器等拦截与修改）
 - `npc-ai.md` — NPC AI 系统（KV 配置、Lua 脚本、常用模式）
