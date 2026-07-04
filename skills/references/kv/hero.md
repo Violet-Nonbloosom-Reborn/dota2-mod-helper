@@ -6,17 +6,16 @@ Dota 2 自定义游戏中的英雄覆写通过 `npc_heroes_custom.txt` 文件定
 
 ## 目录
 
-- [必需字段](#必需字段)
+- [可用字段](#可用字段)
 - [战斗属性](#战斗属性)
 - [状态属性](#状态属性)
 - [移动与视野](#移动与视野)
 - [技能与天赋](#技能与天赋)
 - [英雄标识](#英雄标识)
 - [示例](#示例)
+## 可用字段
 
-## 必需字段
-
-覆写英雄时必须定义以下字段：
+以下字段对英雄定义可用：
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
@@ -122,7 +121,6 @@ Dota 2 自定义游戏中的英雄覆写通过 `npc_heroes_custom.txt` 文件定
 | 字段 | 说明 |
 |------|------|
 | `Facets` | 命石定义块（包含 Icon、Color、GradientID 等） |
-
 ## 英雄标识
 
 | 字段 | 类型 | 说明 |
@@ -133,7 +131,6 @@ Dota 2 自定义游戏中的英雄覆写通过 `npc_heroes_custom.txt` 文件定
 | `Complexity` | Integer | 复杂度（1-3，1为简单） |
 | `Team` | String | 队伍（`Good` 或 `Bad`） |
 | `NameAliases` | String | 名称别名（分号分隔） |
-
 ### 角色定位枚举
 
 | 值 | 说明 |
@@ -148,69 +145,93 @@ Dota 2 自定义游戏中的英雄覆写通过 `npc_heroes_custom.txt` 文件定
 | `Pusher` | 推进 |
 | `Jungler` | 打野 |
 
+## 覆写英雄属性
+
+### 基本方法
+
+覆写英雄时，可以直接使用英雄原始 ID，也可用 `override_hero` 进行覆盖。
+
+覆写英雄时，只需定义要修改的键，无需重新定义所有字段：
+
+```kv
+"npc_dota_hero_axe_custom"
+{
+    "override_hero"       "npc_dota_hero_axe"
+    "Ability1"            "custom_berserkers_call"
+    "VisionDaytimeRange"  "1200"
+}
+```
+
+### 命名约定
+
+创建英雄变体时，通常使用后缀区分：
+- `_dungeon` - 地牢模式变体
+- `_holdout` - 防守模式变体
+- `_custom` - 自定义变体
+
+示例：
+```kv
+"npc_dota_hero_axe_dungeon"
+{
+    "override_hero"    "npc_dota_hero_axe"
+    "Ability2"         "axe_battle_rage"
+    "VisionDaytimeRange" "1100"
+}
+```
+
+### 覆写示例
+```kv
+"npc_dota_hero_leshrac_dungeon"
+{
+    "override_hero"             "npc_dota_hero_leshrac"
+    "ArmorPhysical"             "1"
+    "AttributeIntelligenceGain" "4"
+    "Ability1"                  "leshrac_split_earth_dungeon"
+    "Ability2"                  "leshrac_diabolic_edict_dungeon"
+    "Ability3"                  "leshrac_lightning_storm_dungeon"
+    "Ability4"                  "leshrac_pulse_nova_dungeon"
+    "VisionDaytimeRange"        "1100"
+}
+```
+
+### 全局英雄属性
+
+覆写 `npc_dota_hero_base` 可以为所有英雄设置共享属性：
+
+```kv
+"npc_dota_hero_base"
+{
+    "UseCustomTerrainWeatherEffect" "1"
+}
+```
+
 ## 示例
 
 ### 覆写现有英雄属性
 
 ```kv
-"npc_dota_hero_axe"
+// 只修改视野和技能
+"npc_dota_hero_axe_dungeon"
 {
-    "Model"                     "models/heroes/axe/axe.vmdl"
-    "Enabled"                   "1"
-    "HeroID"                    "2"
-    
-    // 技能
-    "Ability1"                  "axe_berserkers_call"
-    "Ability2"                  "axe_battle_hunger"
-    "Ability3"                  "axe_counter_helix"
-    "Ability4"                  "generic_hidden"
-    "Ability5"                  "generic_hidden"
-    "Ability6"                  "axe_culling_blade"
-    
-    // 天赋
-    "Ability10"                 "special_bonus_unique_axe_8"
-    "Ability11"                 "special_bonus_unique_axe_culling_blade_speed_duration"
-    "Ability12"                 "special_bonus_unique_axe"
-    "Ability13"                 "special_bonus_unique_axe_7"
-    "Ability14"                 "special_bonus_strength_15"
-    "Ability15"                 "special_bonus_unique_axe_4"
-    "Ability16"                 "special_bonus_unique_axe_2"
-    "Ability17"                 "special_bonus_unique_axe_5"
-    
-    // 战斗属性
-    "ArmorPhysical"             "0"
-    "AttackCapabilities"        "DOTA_UNIT_CAP_MELEE_ATTACK"
-    "AttackDamageMin"           "31"
-    "AttackDamageMax"           "35"
-    "AttackRate"                "1.7"
-    "AttackAnimationPoint"      "0.4"
-    "AttackRange"               "150"
-    
-    // 属性
-    "AttributePrimary"          "DOTA_ATTRIBUTE_STRENGTH"
-    "AttributeBaseStrength"     "25"
-    "AttributeStrengthGain"     "2.7"
-    "AttributeBaseAgility"      "20"
-    "AttributeAgilityGain"      "1.7"
-    "AttributeBaseIntelligence" "18"
-    "AttributeIntelligenceGain" "1.6"
-    
-    // 移动
-    "MovementSpeed"             "315"
-    "MovementCapabilities"      "DOTA_UNIT_CAP_MOVE_GROUND"
-    
-    // 状态
-    "StatusHealthRegen"         "2.0"
-    
-    // 视野
-    "VisionDaytimeRange"        "1800"
-    "VisionNighttimeRange"      "800"
-    
-    // 标识
-    "Role"                      "Initiator,Durable,Disabler,Carry"
-    "Rolelevels"                "3,3,2,1"
-    "Complexity"                "1"
-    "Team"                      "Bad"
+    "override_hero"       "npc_dota_hero_axe"
+    "Ability2"            "axe_battle_rage"
+    "VisionDaytimeRange"  "1100"
+}
+
+// 只修改护甲和属性成长
+"npc_dota_hero_leshrac_dungeon"
+{
+    "override_hero"             "npc_dota_hero_leshrac"
+    "ArmorPhysical"             "1"
+    "AttributeIntelligenceGain" "4"
+}
+
+// 只修改技能
+"npc_dota_hero_sven_dungeon"
+{
+    "override_hero"    "npc_dota_hero_sven"
+    "Ability2"         "dungeon_sven_great_cleave"
+    "Ability4"         "holdout_gods_strength"
 }
 ```
 
