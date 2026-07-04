@@ -64,6 +64,7 @@ Dota 2 自定义游戏采用前后端分离架构：
 - `item.md` — 物品系统（物品特有字段、配方）
 - `item_sample/` — 物品案例（Lua 物品实现示例）
   - `probabilistic-crit.md` — 概率暴击装备（修饰器事件、暴击判定、音效同步）
+  - `damage-return.md` — 反弹伤害装备（受伤事件、反弹计算、伤害标志）
   - `item_muting.md` — 物品初始化与自定义锁闭（Spawn、IsMuted、等级限制）
   - `life_rune.md` — 物品上限溢出机制
 - `shops.md` — 商店配置（官方商店类别、赛前商店覆写）
