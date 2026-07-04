@@ -11,6 +11,8 @@ Dota 2 自定义游戏中的单位通过 `npc_units_custom.txt` 文件定义。�
 - [经济与奖励](#经济与奖励)
 - [视觉与碰撞](#视觉与碰撞)
 - [技能槽位](#技能槽位)
+- [其他字段](#其他字段)
+- [Creature 块（AI 配置）](#creature-块ai-配置)
 - [示例](#示例)
 
 ## 必需字段
@@ -132,17 +134,23 @@ Dota 2 自定义游戏中的单位通过 `npc_units_custom.txt` 文件定义。�
 
 ## 其他字段
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `vscripts` | String | AI 脚本路径（相对于 `scripts/vscripts/`），无此字段则无 AI 行为。详见 `npc-ai.md` |
-| `Level` | Integer | 单位等级 |
-| `TeamName` | Enum | 队伍名称（如 `DOTA_TEAM_GOODGUYS`、`DOTA_TEAM_BADGUYS`） |
-| `IsAncient` | Boolean | 是否为远古单位 |
-| `IsNeutralUnitType` | Boolean | 是否为中立单位 |
-| `CanBeDominated` | Boolean | 是否可被支配 |
-| `HasInventory` | Boolean | 是否有物品栏 |
-| `UnitRelationshipClass` | Enum | 单位关系类型 |
-| `precache` | Block | 预加载资源（粒子、模型等） |
+| 字段                            | 类型      | 说明                                                           |
+| ----------------------------- | ------- | ------------------------------------------------------------ |
+| `vscripts`                    | String  | AI 脚本路径（相对于 `scripts/vscripts/`），无此字段则无 AI 行为。详见 `npc-ai.md` |
+| `Level`                       | Integer | 单位等级                                                         |
+| `TeamName`                    | Enum    | 队伍名称（如 `DOTA_TEAM_GOODGUYS`、`DOTA_TEAM_BADGUYS`）             |
+| `IsAncient`                   | Boolean | 是否为远古单位                                                      |
+| `IsNeutralUnitType`           | Boolean | 是否为中立单位                                                      |
+| `IsBossMonster`               | Boolean | 是否为 Boss 怪物                                                  |
+| `ConsideredHero`              | Boolean | 是否被视为英雄（影响某些技能目标选择）                                          |
+| `CanBeDominated`              | Boolean | 是否可被支配                                                       |
+| `HasInventory`                | Boolean | 是否有物品栏                                                       |
+| `UnitRelationshipClass`       | Enum    | 单位关系类型                                                       |
+| `MinimapIcon`                 | String  | 小地图图标名称（如 `minimap_enemyicon`、`minimap_roshancamp`）          |
+| `MinimapIconSize`             | Integer | 小地图图标大小                                                      |
+| `PathfindingSearchDepthScale` | Float   | 寻路搜索深度缩放（0.1 表示更精确的寻路）                                       |
+| `GameSoundsFile`              | String  | 游戏音效文件路径（如 `soundevents/game_sounds_creeps.vsndevts`）        |
+| `precache`                    | Block   | 预加载资源（粒子、模型等）                                                |
 
 ## 示例
 
@@ -236,9 +244,96 @@ Dota 2 自定义游戏中的单位通过 `npc_units_custom.txt` 文件定义。�
 }
 ```
 
+### Boss 单位（带物品掉落）
+
+```kv
+"npc_dota_boss_custom"
+{
+    "BaseClass"                 "npc_dota_creature"
+    "Model"                     "models/heroes/lycan/lycan.vmdl"
+    "Level"                     "5"
+    "ModelScale"                "1.6"
+    "ConsideredHero"            "1"
+    "IsAncient"                 "1"
+    "IsBossMonster"             "1"
+    
+    "MinimapIcon"               "minimap_roshancamp"
+    "MinimapIconSize"           "250"
+    
+    "Ability1"                  "boss_summon_minions"
+    "Ability2"                  "boss_special_attack"
+    
+    "ArmorPhysical"             "28"
+    "MagicalResistance"         "30"
+    
+    "AttackCapabilities"        "DOTA_UNIT_CAP_MELEE_ATTACK"
+    "AttackDamageMin"           "300"
+    "AttackDamageMax"           "320"
+    "AttackRate"                "1.45"
+    "AttackAnimationPoint"      "0.55"
+    "AttackAcquisitionRange"    "600"
+    "AttackRange"               "200"
+    
+    "MovementCapabilities"      "DOTA_UNIT_CAP_MOVE_GROUND"
+    "MovementSpeed"             "300"
+    
+    "StatusHealth"              "8500"
+    "StatusHealthRegen"         "10"
+    "StatusMana"                "2500"
+    "StatusManaRegen"           "5"
+    
+    "VisionDaytimeRange"        "800"
+    "VisionNighttimeRange"      "800"
+    
+    "BountyXP"                  "900"
+    "BountyGoldMin"             "500"
+    "BountyGoldMax"             "600"
+    
+    "Creature"
+    {
+        "DisableResistance"     "80.0"
+        
+        "HPGain"                "800"
+        "DamageGain"            "30"
+        "ArmorGain"             "1"
+        
+        "ItemDrops"
+        {
+            "Consumables"
+            {
+                "Item"
+                {
+                    "1"    "item_health_potion"
+                    "2"    "item_mana_potion"
+                }
+                "Chance"   "50"
+            }
+            "Relics"
+            {
+                "Item"
+                {
+                    "1"    "item_boss_relic"
+                }
+                "Chance"   "100"
+            }
+        }
+        
+        "AttachWearables"
+        {
+            "Wearable1"
+            {
+                "ItemDef"    "7851"
+            }
+        }
+    }
+}
+```
+
 ## Creature 块（AI 配置）
 
-`Creature` 块用于配置单位的 AI 行为参数，仅对 `npc_dota_creature` 基类有效。
+`Creature` 块用于配置单位的 AI 行为参数。
+
+### AI 状态配置
 
 ```kv
 "Creature"
@@ -266,6 +361,7 @@ Dota 2 自定义游戏中的单位通过 `npc_units_custom.txt` 文件定义。�
 | `DefaultState` | String | 默认 AI 状态名称 |
 | `States` | Block | AI 状态定义 |
 | `DisableClumpingBehavior` | Boolean | 禁用单位聚集行为 |
+| `DisableResistance` | Float | 控制效果抗性百分比（如 `80.0` 表示 80% 抗性） |
 
 ### States 参数
 
@@ -276,6 +372,159 @@ Dota 2 自定义游戏中的单位通过 `npc_units_custom.txt` 文件定义。�
 | `Avoidance` | 0-100 | 回避性，越高越倾向躲避 |
 | `Support` | 0-100 | 支援性，越高越倾向帮助队友 |
 | `RoamDistance` | Float | 游荡距离（像素） |
+
+### 等级成长参数
+
+```kv
+"Creature"
+{
+    "HPGain"          "800"
+    "DamageGain"      "30"
+    "ArmorGain"       "1"
+    "MagicResistGain" "5"
+    "MoveSpeedGain"   "0"
+    "BountyGain"      "0"
+    "XPGain"          "20"
+}
+```
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `HPGain` | Integer | 每级生命值成长 |
+| `DamageGain` | Integer | 每级攻击力成长 |
+| `ArmorGain` | Integer | 每级护甲成长 |
+| `MagicResistGain` | Integer | 每级魔抗成长 |
+| `MoveSpeedGain` | Integer | 每级移动速度成长 |
+| `BountyGain` | Integer | 每级赏金成长 |
+| `XPGain` | Integer | 每级经验成长 |
+
+### 物品掉落系统
+
+```kv
+"Creature"
+{
+    "ItemDrops"
+    {
+        "Consumables"
+        {
+            "Item"
+            {
+                "1"    "item_health_potion"
+                "2"    "item_mana_potion"
+            }
+            "Chance"   "12"
+        }
+        "StatTomes"
+        {
+            "Item"
+            {
+                "1"    "item_book_of_strength"
+                "2"    "item_book_of_agility"
+            }
+            "Chance"   "1"
+        }
+        "Trinkets"
+        {
+            "Item"
+            {
+                "1"    "item_slippers"
+                "2"    "item_gauntlets"
+            }
+            "Chance"   "8"
+        }
+        "Relics"
+        {
+            "Item"
+            {
+                "1"    "item_custom_relic"
+            }
+            "Chance"   "0.25"
+        }
+        "LifeRune"
+        {
+            "Item"     "item_life_rune"
+            "Chance"   "100"
+        }
+    }
+}
+```
+
+| 掉落类别 | 说明 |
+|----------|------|
+| `Consumables` | 消耗品（药水、芒果等） |
+| `StatTomes` | 属性书（力量/敏捷/智力书） |
+| `Trinkets` | 小饰品（基础属性装备） |
+| `Relics` | 遗物（特殊物品） |
+| `LifeRune` | 生命符文 |
+
+每个类别包含：
+- `Item`：物品列表，键为编号，值为物品名
+- `Chance`：掉落概率（百分比，如 `12` 表示 12%）
+
+### 初始装备
+
+```kv
+"Creature"
+{
+    "EquippedItems"
+    {
+        "TPScroll"
+        {
+            "Item"    "item_tpscroll"
+        }
+    }
+}
+```
+
+### 饰品
+
+```kv
+"Creature"
+{
+    "AttachWearables"
+    {
+        "Wearable1"
+        {
+            "ItemDef"    "7851"
+        }
+        "Wearable2"
+        {
+            "ItemDef"    "7852"
+        }
+    }
+}
+```
+
+| 字段        | 说明      |
+| --------- | ------- |
+| `ItemDef` | 饰品定义 ID |
+
+### 防御性技能
+
+```kv
+"Creature"
+{
+    "DefensiveAbilities"
+    {
+        "Ability1"
+        {
+            "Name"           "werewolf_howl"
+            "AOE"            "1"
+            "Heal"           "1"
+            "Radius"         "300"
+            "MinimumTargets" "2"
+        }
+    }
+}
+```
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `Name` | String | 技能名称 |
+| `AOE` | Boolean | 是否为范围技能 |
+| `Heal` | Boolean | 是否为治疗技能 |
+| `Radius` | Integer | 技能范围 |
+| `MinimumTargets` | Integer | 最小目标数（达到此数量才会释放） |
 
 详细 AI 实现参见 `npc-ai.md`。
 
