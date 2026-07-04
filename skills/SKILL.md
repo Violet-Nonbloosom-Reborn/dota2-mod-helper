@@ -61,7 +61,9 @@ Dota 2 自定义游戏采用前后端分离架构：
 - `localization.md` — 本地化文本文件（addon_*.txt 结构与键名约定）
 - `ability.md` — 技能系统概述（基础字段、行为标志、AbilityValues、技能继承、覆写与禁用）
 - `ability-datadriven.md` — 数据驱动技能（事件、动作、修饰器、状态、静态效果模式）
-- `item.md` — 物品系统（物品特有字段、配方、商店配置）
+- `item.md` — 物品系统（物品特有字段、配方）
+- `shops.md` — 商店配置（官方商店类别、赛前商店覆写）
+- `custom-shops.md` — 自定义商店（地图设置、子商店、本地化、动态商店、RequiresCustomShop）
 - `unit.md` — 单位系统（必需字段、攻击、移动、状态属性、Creature 块、物品掉落、示例）
 - `hero.md` — 英雄系统（必需字段、战斗属性、技能与天赋、英雄标识、英雄选择列表）
 

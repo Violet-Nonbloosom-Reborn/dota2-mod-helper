@@ -154,6 +154,7 @@
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | `ItemPurchasable` | Boolean | 是否可购买（设为 0 则不出现在商店） |
+| `RequiresCustomShop` | Boolean | 是否仅限自定义商店购买（设为 1 则在原生商店中无法购买） |
 | `ItemBaseLevel` | Integer | 基础等级 |
 | `Model` | String | 物品模型路径 |
 
@@ -263,4 +264,4 @@
 
 ## 商店配置
 
-物品在商店中的布局由 `scripts/shops.txt` 定义，使用 KV 格式指定各商店的物品列表。
+物品在商店中的布局由 `scripts/shops/<map_name>_shops.txt` 定义。详见 `shops.md`。
