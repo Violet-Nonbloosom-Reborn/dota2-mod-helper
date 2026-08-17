@@ -1,7 +1,7 @@
 ---
 name: dota2mod-helper
 version: 1.0
-description: Dota 2 自定义游戏开发辅助。适用于使用 Dota 2 Workshop Tools 开发自定义技能（DataDriven KV）、Lua 脚本（vscripts）、Panorama UI（XML、JavaScript、CSS），以及单位、物品、修饰器 KeyValue 文件。包含代码模式、约定和自定义游戏开发工作流指引。
+description: Dota 2 自定义游戏开发辅助。适用于使用 Dota 2 Workshop Tools 开发自定义技能（DataDriven KV）、Lua 脚本（vscripts）、Panorama UI（XML、JavaScript、CSS）、中立装备打造池，以及单位、物品、修饰器 KeyValue 文件。包含代码模式、约定和自定义游戏开发工作流指引。
 ---
 
 # Dota 2 Modding Helper
@@ -62,6 +62,7 @@ Dota 2 自定义游戏采用前后端分离架构：
 - `ability.md` — 技能系统概述（基础字段、行为标志、AbilityValues、技能继承、覆写与禁用）
 - `ability-datadriven.md` — 数据驱动技能（事件、动作、修饰器、状态、静态效果模式）
 - `item.md` — 物品系统（物品特有字段、配方）
+- `neutral-items.md` — 中立装备打造池（狂石、分级、饰品与附魔候选池）
 - `item_sample/` — 物品案例（Lua 物品实现示例）
   - `probabilistic-crit.md` — 概率暴击装备（修饰器事件、暴击判定、音效同步）
   - `damage-return.md` — 反弹伤害装备（受伤事件、反弹计算、伤害标志）
