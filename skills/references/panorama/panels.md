@@ -29,6 +29,7 @@
 | `DOTAUserName`     | Steam 用户名           | `steamid`                                  |
 | `DOTAScenePanel`   | 3D 场景面板，渲染英雄模型或粒子特效 | `unit`, `camera`, `map`, `particleonly`    |
 | `ProgressBar`      | 进度条                 | `min`, `max`, `value`                      |
+| `ToastManager`     | 短暂消息队列管理器     | 详见 `toast-manager.md`                    |
 
 ## Image 缩放模式
 
