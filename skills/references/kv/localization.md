@@ -74,8 +74,11 @@ Dota 2 自定义游戏使用 KV 格式的本地化文件来定义游戏名称、
 
 - `%value%` — 引用技能特殊值（AbilityValues 中定义的变量）
 - `%value%%%` — 显示为百分比（如 `50%`）
+- `%bonus_<key>%` — 在神杖、魔晶或天赋描述中，引用该升级提供的 `<key>` 加成值（如 `%bonus_radius%`）
 - `{d:int_value}` — 动态整数值
 - `{s:string_value}` — 动态字符串值
+
+`%bonus_<key>%` 是技能描述专用的替换标记，不是在技能 KV 的 `AbilityValues` 中定义 `bonus_<key>`，也不能通过 Lua `GetSpecialValueFor()` 读取。
 
 ### HTML 富文本
 
